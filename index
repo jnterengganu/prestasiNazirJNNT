@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prestasi Pemeriksaan JNNT 2026</title>
+<meta name="description" content="Dashboard prestasi pemeriksaan sekolah Jemaah Nazir Negeri Terengganu, 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@400;500&display=swap">
+<style>
+/* Layout: header band with filters, KPI strip, then a two-column grid of charts and full-width tables. */
+:root {
+  --bg: #f5f7f8; --panel: #ffffff; --fg: #15232b; --muted: #5b6b74; --line: #dfe5e8;
+  --accent: #0f6e78; --accent-2: #d08a2e; --accent-soft: #cfe5e7; --mute-bar: #c9d3d8;
+  --tip-bg: #ffffff; --shadow: 0 6px 24px rgba(15, 35, 43, .12);
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --r: 10px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f171b; --panel: #152127; --fg: #e4ecef; --muted: #93a5ad; --line: #26353c;
+    --accent: #3fb3be; --accent-2: #e3a24f; --accent-soft: #1d3b40; --mute-bar: #33454d;
+    --tip-bg: #1b2a31; --shadow: 0 6px 24px rgba(0, 0, 0, .45);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f171b; --panel: #152127; --fg: #e4ecef; --muted: #93a5ad; --line: #26353c;
+  --accent: #3fb3be; --accent-2: #e3a24f; --accent-soft: #1d3b40; --mute-bar: #33454d;
+  --tip-bg: #1b2a31; --shadow: 0 6px 24px rgba(0, 0, 0, .45);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header.band { background: var(--panel); border-bottom: 1px solid var(--line); }
+header.band .wrap { padding-block: 28px 20px; display: grid; gap: 10px; }
+.eyebrow { margin: 0; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+h1 { margin: 0; font-family: var(--serif); font-weight: 500; font-size: clamp(1.6rem, 3.6vw, 2.3rem); line-height: 1.15; text-wrap: balance; }
+.lede { margin: 0; max-width: 72ch; color: var(--fg); }
+.lede b { font-weight: 600; font-variant-numeric: tabular-nums; }
+.filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 8px; align-items: end; }
+.field { display: grid; gap: 4px; min-width: 0; }
+.field label { font-size: 12px; color: var(--muted); font-weight: 500; }
+select, input[type="search"] { width: 100%; font: inherit; font-size: 14px; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; min-width: 0; }
+select:focus-visible, input:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn { font: inherit; font-size: 14px; border: 1px solid var(--line); background: var(--panel); color: var(--fg); border-radius: 8px; padding: 8px 14px; cursor: pointer; }
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; min-height: 0; }
+.chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; background: var(--accent-soft); color: var(--fg); border-radius: 999px; padding: 3px 4px 3px 10px; border: 0; cursor: pointer; font-family: inherit; }
+.chip span { font-size: 14px; line-height: 1; padding: 0 4px; color: var(--muted); }
+main.wrap { padding-block: 24px 48px; display: grid; gap: 28px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+.tile { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; display: grid; gap: 2px; align-content: start; }
+.tile h3 { margin: 0; font-size: 12px; font-weight: 500; color: var(--muted); }
+.tile .num { font-family: var(--serif); font-size: 2.1rem; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.tile p { margin: 0; font-size: 12px; color: var(--muted); }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 28px 24px; }
+section.sec { display: grid; gap: 8px; align-content: start; min-width: 0; }
+.sec h2 { margin: 0; font-size: 17px; font-weight: 600; text-wrap: balance; }
+.sec > p { margin: 0; font-size: 13px; color: var(--muted); max-width: 72ch; }
+.chart { position: relative; min-height: 120px; min-width: 0; }
+.chart svg { display: block; width: 100%; overflow: visible; }
+.chart text { font-family: var(--sans); }
+.lbl { font-size: 12px; fill: var(--fg); }
+.val { font-size: 12px; fill: var(--muted); font-variant-numeric: tabular-nums; }
+.axis { font-size: 11px; fill: var(--muted); }
+.gridline { stroke: var(--line); }
+.hit { cursor: pointer; }
+.row:hover .bar { opacity: .82; }
+.tip { position: absolute; z-index: 5; pointer-events: none; background: var(--tip-bg); border: 1px solid var(--line); box-shadow: var(--shadow); border-radius: 8px; padding: 8px 10px; font-size: 12px; line-height: 1.45; max-width: 260px; }
+.tip strong { display: block; font-weight: 600; margin-bottom: 2px; }
+.tip span { display: block; color: var(--muted); font-variant-numeric: tabular-nums; }
+.empty { font-size: 13px; color: var(--muted); padding: 12px 0; }
+.split-track { display: flex; height: 22px; border-radius: 6px; overflow: hidden; background: var(--line); }
+.split-legend { display: flex; flex-wrap: wrap; gap: 4px 20px; font-size: 13px; margin-top: 10px; }
+.split-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+.split-legend b { font-variant-numeric: tabular-nums; font-weight: 600; }
+.tablewrap { overflow-x: auto; min-width: 0; border: 1px solid var(--line); border-radius: var(--r); background: var(--panel); }
+.tablewrap.tall { max-height: 520px; overflow-y: auto; }
+table { width: 100%; min-width: 680px; border-collapse: collapse; font-size: 13px; }
+th { position: sticky; top: 0; background: var(--panel); text-align: left; font-weight: 500; color: var(--muted); padding: 9px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; z-index: 1; }
+td { padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; line-height: 1.4; }
+tr:last-child td { border-bottom: 0; }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+td.sub { color: var(--muted); }
+td.date { white-space: nowrap; font-variant-numeric: tabular-nums; }
+tr.click { cursor: pointer; }
+tr.click:hover td { background: var(--accent-soft); }
+tr.on td { background: var(--accent-soft); }
+.tbl-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 8px 16px; }
+.tbl-head .field { width: min(100%, 280px); }
+.count { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+details.notes { font-size: 13px; color: var(--muted); }
+details.notes summary { cursor: pointer; color: var(--fg); font-weight: 500; }
+details.notes ul { margin: 8px 0 0; padding-left: 1.2em; display: grid; gap: 4px; max-width: 78ch; }
+footer { font-size: 12px; color: var(--muted); }
+@media (prefers-reduced-motion: no-preference) { .bar { transition: width .35s ease-out, opacity .15s; } }
+</style>
+</head>
+<body>
+<header class="band">
+  <div class="wrap">
+    <p class="eyebrow">Jemaah Nazir Negeri Terengganu · Laporan Pemeriksaan JNJK</p>
+    <h1>Prestasi Pemeriksaan Sekolah 2026</h1>
+    <p class="lede" id="lede"></p>
+    <div class="filters" role="group" aria-label="Penapis">
+      <div class="field"><label for="f-ppd">PPD</label><select id="f-ppd"></select></div>
+      <div class="field"><label for="f-nazir">Pegawai (nazir)</label><select id="f-nazir"></select></div>
+      <div class="field"><label for="f-jenis">Jenis pemeriksaan</label><select id="f-jenis"></select></div>
+      <div class="field"><label for="f-bulan">Bulan</label><select id="f-bulan"></select></div>
+      <div><button class="btn" id="reset" type="button">Set semula penapis</button></div>
+    </div>
+    <div class="chips" id="chips" aria-live="polite"></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="tiles" aria-label="Angka utama">
+    <div class="tile"><h3>Pemeriksaan</h3><div class="num" id="k-pem">—</div><p>Satu sekolah, satu program, satu tarikh</p></div>
+    <div class="tile"><h3>Sekolah diperiksa</h3><div class="num" id="k-sek">—</div><p>Kod sekolah berbeza</p></div>
+    <div class="tile"><h3>Penugasan nazir</h3><div class="num" id="k-tug">—</div><p>Seorang nazir pada satu pemeriksaan</p></div>
+    <div class="tile"><h3>Pegawai terlibat</h3><div class="num" id="k-naz">—</div><p>Termasuk nazir negeri dan sektor lain</p></div>
+    <div class="tile"><h3>Guru dicerap</h3><div class="num" id="k-gur">—</div><p>Jumlah lajur Guru Dicerap</p></div>
+  </section>
+
+  <section class="sec" id="bulanan">
+    <h2>Pemeriksaan setiap bulan</h2>
+    <p>Mengikut bulan tarikh mula. Klik bar untuk menapis ikut bulan itu.</p>
+    <div class="chart" id="c-bulan"></div>
+  </section>
+
+  <div class="grid">
+    <section class="sec">
+      <h2>Pemeriksaan ikut PPD</h2>
+      <p>Klik bar untuk menapis ikut PPD. Klik sekali lagi untuk kembali ke semua PPD.</p>
+      <div class="chart" id="c-ppd"></div>
+    </section>
+    <section class="sec">
+      <h2>Jenis pemeriksaan</h2>
+      <p>Kategori jenis pemeriksaan seperti dalam sistem JNJK. Klik bar untuk menapis.</p>
+      <div class="chart" id="c-jenis"></div>
+    </section>
+    <section class="sec">
+      <h2>Jenis sekolah diperiksa</h2>
+      <p>Bilangan pemeriksaan mengikut jenis sekolah.</p>
+      <div class="chart" id="c-jsek"></div>
+    </section>
+    <section class="sec">
+      <h2>Bandar dan luar bandar</h2>
+      <p>Pecahan pemeriksaan mengikut lokasi sekolah.</p>
+      <div class="chart" id="c-lokasi" style="min-height:70px"></div>
+    </section>
+  </div>
+
+  <section class="sec" id="pegawai">
+    <div class="tbl-head">
+      <div>
+        <h2>Prestasi pegawai</h2>
+        <p class="count">Klik nama pegawai untuk menapis seluruh halaman.</p>
+      </div>
+      <div class="field"><label for="cari-nazir">Cari pegawai</label><input type="search" id="cari-nazir" placeholder="Taip nama…" autocomplete="off"></div>
+    </div>
+    <div class="tablewrap tall">
+      <table>
+        <thead><tr><th>Pegawai</th><th>Pejabat</th><th class="n">Penugasan</th><th class="n">Sekolah</th><th class="n">Program</th><th class="n">Guru dicerap</th><th>Terakhir</th></tr></thead>
+        <tbody id="t-nazir"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="sec" id="program">
+    <h2>Program pemeriksaan</h2>
+    <p>Setiap program yang dilaksanakan, disusun mengikut bilangan pemeriksaan.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Program</th><th>Jenis</th><th class="n">Pemeriksaan</th><th class="n">Sekolah</th><th class="n">Guru dicerap</th></tr></thead>
+        <tbody id="t-program"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="sec" id="senarai">
+    <div class="tbl-head">
+      <div>
+        <h2>Senarai pemeriksaan</h2>
+        <p class="count" id="senarai-count"></p>
+      </div>
+      <div class="field"><label for="cari-sekolah">Cari sekolah</label><input type="search" id="cari-sekolah" placeholder="Nama atau kod sekolah…" autocomplete="off"></div>
+    </div>
+    <div class="tablewrap tall">
+      <table>
+        <thead><tr><th>Tarikh</th><th>Sekolah</th><th>PPD</th><th>Program</th><th>Pegawai</th><th class="n">Guru dicerap</th></tr></thead>
+        <tbody id="t-senarai"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <details class="notes">
+    <summary>Nota tentang data dan definisi</summary>
+    <ul>
+      <li>Sumber: eksport Laporan Pemeriksaan JNJK bagi Negeri Terengganu, tempoh 01/01/2026 hingga 11/11/2026. Setiap baris dalam eksport ialah satu penugasan nazir.</li>
+      <li>Pemeriksaan dikira sebagai gabungan unik kod sekolah, nama program dan tarikh mula. Beberapa nazir yang menjalankan pemeriksaan yang sama dikira sebagai satu pemeriksaan.</li>
+      <li>Apabila penapis pegawai dipilih, angka menunjukkan pemeriksaan yang melibatkan pegawai tersebut sahaja. Guru dicerap ialah jumlah yang direkodkan oleh pegawai itu.</li>
+      <li>Nombor kad pengenalan yang dilampirkan pada nama nazir dalam eksport asal telah dibuang.</li>
+      <li>Lajur Ketidakakuran bernilai TIDAK bagi semua rekod, dan lajur AP, PP, SS, SPI dan DKPM kosong, jadi lajur tersebut tidak dipaparkan.</li>
+      <li>Lajur Daerah kosong bagi sekolah PPD Kuala Nerus, jadi PPD digunakan sebagai unit kawasan.</li>
+    </ul>
+  </details>
+  <footer>Data dikemas kini: 11 November 2026.</footer>
+</main>
+
+<script id="data" type="application/json">{"cols":["kod_sekolah","nama_sekolah","ppd","lokasi","gred","jenis_sekolah","kategori","jenis_pemeriksaan","nama_pemeriksaan","nazir","pejabat","tarikh_mula","tarikh_tamat","guru_dicerap"],"dicts":{"nama_sekolah":["KOLEJ VOKASIONAL KEMAMAN","KOLEJ VOKASIONAL KUALA BERANG","KOLEJ VOKASIONAL WAKAF TEMBESU","SEKOLAH BERASRAMA PENUH INTEGRASI BATU RAKIT","SEKOLAH KEBANGSAAN AJIL","SEKOLAH KEBANGSAAN AYER JERNEH","SEKOLAH KEBANGSAAN BANDAR DUNGUN","SEKOLAH KEBANGSAAN BANGGOL PERADONG","SEKOLAH KEBANGSAAN BARI","SEKOLAH KEBANGSAAN BARI ( SG TONG)","SEKOLAH KEBANGSAAN BATANGAN","SEKOLAH KEBANGSAAN BATU 29","SEKOLAH KEBANGSAAN BATU RAKIT","SEKOLAH KEBANGSAAN BELADAU KOLAM","SEKOLAH KEBANGSAAN BINJAI KERTAS","SEKOLAH KEBANGSAAN BUKIT APIT","SEKOLAH KEBANGSAAN BUKIT BAYAS","SEKOLAH KEBANGSAAN BUKIT CHEMPAKA","SEKOLAH KEBANGSAAN BUKIT GASING","SEKOLAH KEBANGSAAN BUKIT JEJULONG","SEKOLAH KEBANGSAAN BUKIT LOSONG","SEKOLAH KEBANGSAAN BUKIT PAYONG","SEKOLAH KEBANGSAAN BUKIT PUTERI","SEKOLAH KEBANGSAAN BUKIT TOK BENG","SEKOLAH KEBANGSAAN BUKIT TUNGGAL","SEKOLAH KEBANGSAAN BUKIT WAN","SEKOLAH KEBANGSAAN CHALOK","SEKOLAH KEBANGSAAN DARAT BATU RAKIT","SEKOLAH KEBANGSAAN DELONG","SEKOLAH KEBANGSAAN DUYONG","SEKOLAH KEBANGSAAN FELDA MENGKAWANG","SEKOLAH KEBANGSAAN GONDANG","SEKOLAH KEBANGSAAN GONG KAPAS","SEKOLAH KEBANGSAAN GONG NANGKA","SEKOLAH KEBANGSAAN INSTITUT PENDIDIKAN GURU KAMPUS DATO RAZALI ISMAIL","SEKOLAH KEBANGSAAN JELAPANG","SEKOLAH KEBANGSAAN JERONG","SEKOLAH KEBANGSAAN KAMPONG TAYOR","SEKOLAH KEBANGSAAN KAMPONG TENGAH","SEKOLAH KEBANGSAAN KAMPUNG BAHARU","SEKOLAH KEBANGSAAN KAMPUNG BAHARU SERADA","SEKOLAH KEBANGSAAN KAMPUNG FIKRI","SEKOLAH KEBANGSAAN KAMPUNG GEMUROH","SEKOLAH KEBANGSAAN KAMPUNG NAIL","SEKOLAH KEBANGSAAN KAMPUNG NANGKA","SEKOLAH KEBANGSAAN KELULUT","SEKOLAH KEBANGSAAN KEPONG","SEKOLAH KEBANGSAAN KERUAK","SEKOLAH KEBANGSAAN KESOM","SEKOLAH KEBANGSAAN KIJAL","SEKOLAH KEBANGSAAN KOMPLEKS MENGABANG TELIPOT","SEKOLAH KEBANGSAAN KOMPLEKS RANTAU ABANG","SEKOLAH KEBANGSAAN KOMPLEKS TEMBESU","SEKOLAH KEBANGSAAN KUA","SEKOLAH KEBANGSAAN KUALA BERANG","SEKOLAH KEBANGSAAN KUALA DURA","SEKOLAH KEBANGSAAN KUALA JENDERIS","SEKOLAH KEBANGSAAN KUALA TELEMONG","SEKOLAH KEBANGSAAN LEMBAH BIDONG","SEKOLAH KEBANGSAAN LKTP BELARA","SEKOLAH KEBANGSAAN LOSONG","SEKOLAH KEBANGSAAN LUBOK TERAS","SEKOLAH KEBANGSAAN LUBUK PERIOK","SEKOLAH KEBANGSAAN MANGKOK","SEKOLAH KEBANGSAAN MANIR","SEKOLAH KEBANGSAAN MARAS","SEKOLAH KEBANGSAAN MEDAN JAYA","SEKOLAH KEBANGSAAN MENGABANG TELIPOT","SEKOLAH KEBANGSAAN MERANG","SEKOLAH KEBANGSAAN MERCHANG","SEKOLAH KEBANGSAAN NIBONG","SEKOLAH KEBANGSAAN PADANG AIR","SEKOLAH KEBANGSAAN PADANG KEMUNTING","SEKOLAH KEBANGSAAN PADANG LANDAK","SEKOLAH KEBANGSAAN PADANG MENGKUANG","SEKOLAH KEBANGSAAN PADANG MIDIN","SEKOLAH KEBANGSAAN PADANG PULUT","SEKOLAH KEBANGSAAN PAGAR BESI","SEKOLAH KEBANGSAAN PALOH","SEKOLAH KEBANGSAAN PASIR PANJANG","SEKOLAH KEBANGSAAN PASIR RAJA","SEKOLAH KEBANGSAAN PAUH","SEKOLAH KEBANGSAAN PAYA BUNGA","SEKOLAH KEBANGSAAN PAYA RESAK","SEKOLAH KEBANGSAAN PENAREK","SEKOLAH KEBANGSAAN PENDIDIKAN KHAS BESUT","SEKOLAH KEBANGSAAN PENDIDIKAN KHAS KUALA TERENGGANU","SEKOLAH KEBANGSAAN PERMAISURI NUR ZAHIRAH","SEKOLAH KEBANGSAAN PEROH","SEKOLAH KEBANGSAAN PULAU KERENGGA","SEKOLAH KEBANGSAAN PULAU REDANG","SEKOLAH KEBANGSAAN PULAU SERAI","SEKOLAH KEBANGSAAN PUSAT","SEKOLAH KEBANGSAAN PUSAT CHABANG TIGA","SEKOLAH KEBANGSAAN PUSAT DUNGUN","SEKOLAH KEBANGSAAN RENGAS BEKAH","SEKOLAH KEBANGSAAN RHU SEPULUH","SEKOLAH KEBANGSAAN RU RENDANG","SEKOLAH KEBANGSAAN SAUJANA","SEKOLAH KEBANGSAAN SEBERANG DUNGUN","SEKOLAH KEBANGSAAN SEBERANG TAKIR","SEKOLAH KEBANGSAAN SEBERANG TAYOR","SEKOLAH KEBANGSAAN SENTOL PATAH","SEKOLAH KEBANGSAAN SERADA","SEKOLAH KEBANGSAAN SERDANG","SEKOLAH KEBANGSAAN SERI BERANG","SEKOLAH KEBANGSAAN SERI BUDIMAN","SEKOLAH KEBANGSAAN SERI GELIGA","SEKOLAH KEBANGSAAN SULTAN OMAR","SEKOLAH KEBANGSAAN SULTAN SULAIMAN 1","SEKOLAH KEBANGSAAN TANJUNG GELAM","SEKOLAH KEBANGSAAN TANJUNG PATI","SEKOLAH KEBANGSAAN TAPAH","SEKOLAH KEBANGSAAN TASEK","SEKOLAH KEBANGSAAN TELOK PASU","SEKOLAH KEBANGSAAN TELUK KETAPANG","SEKOLAH KEBANGSAAN TELUK MENARA","SEKOLAH KEBANGSAAN TEMBILA","SEKOLAH KEBANGSAAN TENGKU AMPUAN INTAN","SEKOLAH KEBANGSAAN TENGKU AMPUAN MARIAM","SEKOLAH KEBANGSAAN TENGKU BARIAH","SEKOLAH KEBANGSAAN TENGKU MAHMUD","SEKOLAH KEBANGSAAN TENGKU MAHMUD 2","SEKOLAH KEBANGSAAN TOK DIR","SEKOLAH KEBANGSAAN TOK JEMBAL","SEKOLAH KEBANGSAAN TOK KAH","SEKOLAH KEBANGSAAN TOK MOTONG","SEKOLAH KEBANGSAAN UNDANG","SEKOLAH KEBANGSAAN WAKAF MEMPELAM","SEKOLAH KEBANGSAAN WAKAF TAPAI","SEKOLAH MENENGAH AGAMA IMTIAZ KEMAMAN","SEKOLAH MENENGAH AGAMA MARANG","SEKOLAH MENENGAH AGAMA SULTAN ISMAIL","SEKOLAH MENENGAH IMTIAZ YAYASAN TERENGGANU SETIU","SEKOLAH MENENGAH IMTIAZ YAYASAN TERENGGANU-BESUT","SEKOLAH MENENGAH IMTIAZ YAYASAN TERENGGANU-DUNGUN","SEKOLAH MENENGAH IMTIAZ YAYASAN TERENGGANU-KUALA TERENGGANU","SEKOLAH MENENGAH KEBANGSAAN (AGAMA) DURIAN GULING","SEKOLAH MENENGAH KEBANGSAAN (AGAMA) KUALA ABANG","SEKOLAH MENENGAH KEBANGSAAN AGAMA DATO' HAJI ABBAS","SEKOLAH MENENGAH KEBANGSAAN AGAMA NURUL ITTIFAQ","SEKOLAH MENENGAH KEBANGSAAN AGAMA SHEIKH ABDUL MALEK","SEKOLAH MENENGAH KEBANGSAAN ALOR PEROI","SEKOLAH MENENGAH KEBANGSAAN BADRUL ALAM SHAH","SEKOLAH MENENGAH KEBANGSAAN BALAI BESAR","SEKOLAH MENENGAH KEBANGSAAN BELARA","SEKOLAH MENENGAH KEBANGSAAN BUKIT BESAR","SEKOLAH MENENGAH KEBANGSAAN BUKIT DIMAN","SEKOLAH MENENGAH KEBANGSAAN BUKIT MENTOK","SEKOLAH MENENGAH KEBANGSAAN BUKIT SAWA","SEKOLAH MENENGAH KEBANGSAAN BUKIT TUNGGAL","SEKOLAH MENENGAH KEBANGSAAN CHALOK","SEKOLAH MENENGAH KEBANGSAAN CHUKAI","SEKOLAH MENENGAH KEBANGSAAN CHUNG HWA WEI SIN","SEKOLAH MENENGAH KEBANGSAAN DATO' RAZALI ISMAIL","SEKOLAH MENENGAH KEBANGSAAN GONG NANGKA","SEKOLAH MENENGAH KEBANGSAAN HAJI ABDUL RAHMAN LIMBONG","SEKOLAH MENENGAH KEBANGSAAN IBRAHIM FIKRI","SEKOLAH MENENGAH KEBANGSAAN JENAGOR","SEKOLAH MENENGAH KEBANGSAAN KIJAL","SEKOLAH MENENGAH KEBANGSAAN KOMPLEKS MENGABANG TELIPOT","SEKOLAH MENENGAH KEBANGSAAN KOMPLEKS SEBERANG TAKIR","SEKOLAH MENENGAH KEBANGSAAN KUALA TELEMONG","SEKOLAH MENENGAH KEBANGSAAN MAK LAGAM","SEKOLAH MENENGAH KEBANGSAAN MERCHANG","SEKOLAH MENENGAH KEBANGSAAN PADANG KEMUNTING","SEKOLAH MENENGAH KEBANGSAAN PADANG MIDIN","SEKOLAH MENENGAH KEBANGSAAN PENAREK","SEKOLAH MENENGAH KEBANGSAAN PERMAI","SEKOLAH MENENGAH KEBANGSAAN PULAU SERAI","SEKOLAH MENENGAH KEBANGSAAN PUTRA","SEKOLAH MENENGAH KEBANGSAAN SEBERANG MARANG","SEKOLAH MENENGAH KEBANGSAAN SERADA","SEKOLAH MENENGAH KEBANGSAAN SERI BUDIMAN","SEKOLAH MENENGAH KEBANGSAAN SERI CHENEH","SEKOLAH MENENGAH KEBANGSAAN SERI RASAU","SEKOLAH MENENGAH KEBANGSAAN SERI SERATING","SEKOLAH MENENGAH KEBANGSAAN SULTAN ISMAIL 2","SEKOLAH MENENGAH KEBANGSAAN SULTAN MANSOR","SEKOLAH MENENGAH KEBANGSAAN SULTAN OMAR","SEKOLAH MENENGAH KEBANGSAAN SULTAN SULAIMAN","SEKOLAH MENENGAH KEBANGSAAN SURA","SEKOLAH MENENGAH KEBANGSAAN TEMBILA","SEKOLAH MENENGAH KEBANGSAAN TENGKU INTAN ZAHARAH","SEKOLAH MENENGAH KEBANGSAAN TENGKU LELA SEGARA","SEKOLAH MENENGAH KEBANGSAAN TENGKU MAHMUD","SEKOLAH MENENGAH KEBANGSAAN TENGKU MIZAN ZAINAL ABIDIN","SEKOLAH MENENGAH KEBANGSAAN TUN INDERA","SEKOLAH MENENGAH KEBANGSAAN WAKAF TAPAI","SEKOLAH MENENGAH SAINS DUNGUN","SEKOLAH MENENGAH SAINS HULU TERENGGANU","SEKOLAH MENENGAH SAINS KUALA TERENGGANU","SEKOLAH MENENGAH SAINS SETIU","SEKOLAH MENENGAH SAINS SULTAN MAHMUD","SEKOLAH MENENGAH TEKNIK KUALA TERENGGANU","SEKOLAH SUKAN MALAYSIA TERENGGANU","SMA (ATAS) SULTAN ZAINAL ABIDIN","SMA AL FALAH","SMA KHAIRIAH","SMA MAARIF","SMA SULTAN ZAINAL ABIDIN LADANG"],"ppd":["Besut","Dungun","Hulu Terengganu","Kemaman","Kuala Nerus","Kuala Terengganu","Marang","Setiu"],"lokasi":["Bandar","Luar Bandar"],"gred":["A","B"],"jenis_sekolah":["Kolej Vokasional","SK","SK (Khas)","SM + SR (Model Khas)","SM Agama (SABK)","SM Berasrama Penuh","SM Teknik","SMK","SMK Agama","SRK","Sekolah Sukan"],"kategori":["K","M","R"],"jenis_pemeriksaan":["Aduan dan Siasatan","Lain-lain Penaziran","Pemeriksaan Pelaksanaan Dasar atau Program Pendidikan","Pemeriksaan Penuh","Penilaian/Pengiktirafan","Program Mentor-Mentee","Tinjauan"],"nama_pemeriksaan":["Aduan dan Siasatan Tanpa PdP","Bimbingan In Situ: Keselamatan dan Kesejahteraan Murid (BKKM) Tahun 2026","Bimbingan dan Sokongan Profesional Tahun 2026","Modul Bimbingan Nazir Sekolah Novis","PEMERIKSAAN SEKOLAH BERASRAMA PENUH","PENILAIAN CALON GURU CEMERLANG DAN PENSYARAH CEMERLANG (GCPC) TAHUN 2026","Pemeriksaan Penuh Program Transformasi Sekolah 2025 (TS25) Di Sekolah Menengah Kebangsaan (SMK) Tahun 2026","Penilaian Pengesahan Taraf Cemerlang dan Penilaian Kecermelangan Institusi Pendidikan Tahun 2026","TINDAK SUSUL BAGI PEMERIKSAAN SEKOLAH BERASRAMA PENUH (P-SBP) TAHUN 2026","TINDAK SUSUL SEKOLAH BERASRAMA PENUH (SBP) TAHUN 2026 (BIMBINGAN IN SITU)","Tinjauan Minggu Pertama Persekolahan (TMPP) Tahun 2026","Tinjauan Pelaksanaan Kurikulum Prasekolah 2026 (TPKPra2026) Tahun 2026","Tinjauan Pelaksanaan Program Sekolah Pengajar (TPPSP) Tahun 2026"],"nazir":["AHMAD FAUZI BIN MAMAT @ MOHD ARIFFIN","AINUL MURIZA BINTI IBRAHIM","CHE ROSLI BIN AHAMAD","DAMISAH BINTI MOHD RAZALI","DR. HASNONI BINTI HASIM","DR. IZHAB BIN ISMAIL","DR. MOHAMAD NUR KAMAL BIN AWANG","DR. MOHD RAHIMI BIN A RAHMAN","DR. RAZIANNA BINTI ABDUL RAHMAN","DR. SAIFUL ADLI BIN AB RAHIM","DR.SUHAILI BT MOHD YUSOFF","FARAWAHIDAH BINTI ABD LATEH","HASBULLAH BIN MAT DAUD","HJ. MOHD KAMRUHISAM BIN RAMLY","HJH SANIAH BT. HASSAN","IFZAM BIN KHALIL","KAIRUL NAAIN BIN SHAMSUDDIN","KAMARUL AZAHA BIN AWANG","KHAIRUNNISA BINTI MOKHTAR","KHAMIZAH BINTI KAMARUDIN","LOKMAN HAKIM BIN MAHAMAD","LOW SWEE SING","LUKMAN BIN SHUKRI SAGHIRI","MARIANI BINTI ABDUL RAHMAN","MARINA BINTI ISMAIL","MOHAMAD NASIR BIN ABD AZIZ","MOHD AZIZI BIN ALIAS","MOHD BAHARUDDIN BIN MOHAMAD ZIN","MOHD FAHMI ASYRAF BIN MOHD NOR AZMI","MOHD KAMMAL AHMAD KAMARUDDIN BIN JALIL","MOHD KHUSHAIRY BIN BAKHTIAR AFINDI","MOHD RIDZUAN BIN AHMAD KAMAL","MOHD SHAFIQUE BIN KAMARUDZAMAN","MOHD SHAHRIL BIN MOHD ANIP","NIK AHMAD SOLEHUDDIN BIN MOHAMAD NOR","NIK AIDA MASTURA BINTI NIK ABDUL MAJID","NIK ROSLINA BINTI NIK HAMID","NORAQILAH BINTI AHMAD ZABIDI","NORHAYATI BINTI MUSTAFA","NORHISHAM BIN ABDULLAH","NORIZAN BINTI AWANG @ RASHID","NUR FAZLEENA BINTI M.YUNUS","NUR SABRINA BINTI ZAKARIA","NURUL ANIHA BINTI MOHD NAWI","NURUL HUDA BINTI ABDULLAH","RAHAMAH BINTI HASSAN","ROSNITA BINTI ABDULLAH","RUHIL ZURAIFAH BINTI MOHAMED SAWAL","SAPARENA BINTI AMRI","SAPERI BIN TOMAN","SARIPAH BINTI MUHAMED JAAFAR","SITI FADILAH BINTI MOHAMED","SITI RODZILA BINTI SHEIKH GHADZI","SITI ZALANI BINTI MUSA","SOLEH BIN MOHD NOOR","SURAYA SARI BINTI ABD AZIZ","SURYATI BINTI MOHAMMAD","TAN KIN YET","TENGKU ROSMALIZA BINTI TENGKU SEMAN","TENGKU ZAKHIRUL NORAINI BINTI TENGKU ZUKORNAIN","WAN NOOR HAYATI BT. WAN MAT ZAIN","YUSMAWANI BT MAT GHANI","ZAHAR BIN RASHID","ZULKEFLI BIN AHMAD"],"pejabat":["JN CAWANGAN BINTULU","JN NEGERI KEDAH","JN NEGERI KELANTAN","JN NEGERI PAHANG","JN NEGERI PERAK","JN NEGERI PERLIS","JN NEGERI PULAU PINANG","JN NEGERI SELANGOR","JN NEGERI SEMBILAN","JN NEGERI TERENGGANU","JN NEGERI WP KUALA LUMPUR","SDP","SDTM","SPIP","SPK","SPKN","SSJK"]},"rows":[["TBA7006",12,4,1,0,1,2,2,10,42,9,"2026-01-11","2026-01-11",0],["TBA3010",29,5,0,0,1,2,2,10,6,9,"2026-01-11","2026-01-11",0],["TBA3021",64,5,0,0,1,2,2,10,49,9,"2026-01-11","2026-01-11",0],["TBA3003",82,5,0,1,1,2,2,10,33,9,"2026-01-11","2026-01-11",0],["TBA5020",53,2,1,0,1,2,2,10,63,9,"2026-01-11","2026-01-11",0],["TEA4013",149,6,1,0,7,1,2,10,40,9,"2026-01-11","2026-01-11",0],["TBA1022",80,1,1,0,1,2,2,10,44,9,"2026-01-11","2026-01-11",0],["TBA7009",17,4,1,0,1,2,2,10,20,9,"2026-01-11","2026-01-11",0],["TBA3041",123,5,0,0,1,2,2,10,2,9,"2026-01-11","2026-01-11",0],["TBA4022",97,6,1,0,1,2,2,10,0,9,"2026-01-11","2026-01-11",0],["TBA7003",100,4,0,0,1,2,2,10,13,9,"2026-01-11","2026-01-11",0],["TBA3023",128,5,0,0,1,2,2,10,60,9,"2026-01-11","2026-01-11",0],["TBA7019",50,4,1,0,1,2,2,10,18,9,"2026-01-11","2026-01-11",0],["TBA5020",53,2,1,0,1,2,2,10,8,13,"2026-01-11","2026-01-11",0],["TBA3018",93,5,0,0,1,2,2,10,60,9,"2026-01-12","2026-01-12",0],["TBA7021",115,4,0,0,1,2,2,10,13,9,"2026-01-12","2026-01-12",0],["TBA7010",25,4,1,0,1,2,2,10,20,9,"2026-01-12","2026-01-12",0],["TBA3086",106,5,0,0,1,2,2,10,33,9,"2026-01-12","2026-01-12",0],["TBA1012",91,1,1,0,1,2,2,10,44,9,"2026-01-12","2026-01-12",0],["TBA7004",67,4,1,0,1,2,2,10,18,9,"2026-01-12","2026-01-12",0],["TEA3085",173,5,0,0,7,1,2,10,2,9,"2026-01-12","2026-01-12",0],["TEA7002",186,4,1,0,7,1,2,10,8,13,"2026-01-12","2026-01-12",0],["TBA7024",110,4,1,1,1,2,2,10,42,9,"2026-01-12","2026-01-12",0],["TBA4008",102,6,1,0,1,2,2,10,40,9,"2026-01-12","2026-01-12",0],["TBA3064",13,5,0,0,1,2,2,10,49,9,"2026-01-12","2026-01-12",0],["TBA5028",62,2,1,1,1,2,2,10,63,9,"2026-01-12","2026-01-12",0],["TBA3027",40,5,0,0,1,2,2,10,0,9,"2026-01-12","2026-01-12",0],["TEA7002",186,4,1,0,7,1,2,10,6,9,"2026-01-12","2026-01-12",0],["TBA3032",75,5,0,0,1,2,2,10,60,9,"2026-01-13","2026-01-13",0],["TBA3065",48,5,0,0,1,2,2,10,6,9,"2026-01-13","2026-01-13",0],["TEA4014",184,6,1,0,7,1,2,10,0,9,"2026-01-13","2026-01-13",0],["TKE7001",194,4,0,0,6,1,2,10,18,9,"2026-01-13","2026-01-13",0],["TRA7001",139,4,0,0,8,1,2,10,42,9,"2026-01-13","2026-01-13",0],["TEA4021",176,6,1,1,7,1,2,10,44,9,"2026-01-13","2026-01-13",0],["TRA4016",137,6,1,0,8,1,2,10,40,9,"2026-01-13","2026-01-13",0],["TBA7025",71,4,1,1,1,2,2,10,13,9,"2026-01-13","2026-01-13",0],["TRA3002",141,5,0,0,8,1,2,10,33,9,"2026-01-13","2026-01-13",0],["TBA5033",56,2,1,1,1,2,2,10,63,9,"2026-01-13","2026-01-13",0],["TBA4027",18,6,1,1,1,2,2,10,2,9,"2026-01-13","2026-01-13",0],["TBA1026",125,1,1,1,1,2,2,10,44,9,"2026-01-14","2026-01-14",0],["TBA3095",16,5,0,0,1,2,2,10,2,9,"2026-01-14","2026-01-14",0],["THA7001",2,4,0,0,0,0,2,10,20,9,"2026-01-14","2026-01-14",0],["TEA7004",150,4,0,0,7,1,2,10,13,9,"2026-01-14","2026-01-14",0],["TBA4025",83,6,0,1,1,2,2,10,60,9,"2026-01-14","2026-01-14",0],["TBA3017",60,5,0,0,1,2,2,10,33,9,"2026-01-14","2026-01-14",0],["TBA7015",42,4,1,0,1,2,2,10,6,9,"2026-01-14","2026-01-14",0],["TBA1026",125,1,1,1,1,2,2,10,8,13,"2026-01-14","2026-01-14",0],["TBA3094",20,5,0,0,1,2,2,10,49,9,"2026-01-14","2026-01-14",0],["TEA4017",171,6,1,1,7,1,2,10,0,9,"2026-01-14","2026-01-14",0],["TBA5047",57,2,1,0,1,2,2,10,63,9,"2026-01-14","2026-01-14",0],["TBA4015",129,6,1,0,1,2,2,10,40,9,"2026-01-14","2026-01-14",0],["TBA6085",96,7,1,0,1,2,2,10,42,9,"2026-01-14","2026-01-14",0],["TBA6011",84,7,1,0,1,2,2,10,18,9,"2026-01-14","2026-01-14",0],["TEA7008",165,4,1,1,7,1,2,10,20,9,"2026-01-15","2026-01-15",0],["TEA3085",173,5,0,0,7,1,5,3,54,9,"2026-01-19","2026-01-20",0],["TEA3085",173,5,0,0,7,1,5,3,36,2,"2026-01-19","2026-01-20",2],["TBA7029",52,4,0,1,1,2,0,0,20,9,"2026-01-21","2026-01-22",0],["TBA7029",52,4,0,1,1,2,0,0,18,9,"2026-01-21","2026-01-22",0],["TBA7029",52,4,0,1,1,2,0,0,40,9,"2026-01-21","2026-01-22",0],["TEE7001",193,4,0,0,5,1,3,4,56,14,"2026-02-02","2026-02-05",3],["TEE7001",193,4,0,0,5,1,3,4,39,14,"2026-02-02","2026-02-05",1],["TEA5045",190,2,1,0,5,1,3,4,63,9,"2026-02-02","2026-02-05",3],["TEA3122",191,5,0,0,5,1,3,4,34,2,"2026-02-02","2026-02-05",3],["TEA5045",190,2,1,0,5,1,3,4,44,9,"2026-02-02","2026-02-05",3],["TEA3122",191,5,0,0,5,1,3,4,61,2,"2026-02-02","2026-02-05",3],["TEE7001",193,4,0,0,5,1,3,4,7,14,"2026-02-02","2026-02-05",3],["TEE7001",193,4,0,0,5,1,3,4,26,13,"2026-02-02","2026-02-05",3],["TEE7001",193,4,0,0,5,1,3,4,59,11,"2026-02-02","2026-02-05",3],["TEA5045",190,2,1,0,5,1,3,4,13,9,"2026-02-02","2026-02-05",3],["TEA3122",191,5,0,0,5,1,3,4,51,2,"2026-02-02","2026-02-05",3],["TEA5045",190,2,1,0,5,1,3,4,0,9,"2026-02-02","2026-02-05",3],["TEA3122",191,5,0,0,5,1,3,4,10,2,"2026-02-02","2026-02-05",3],["TEA5045",190,2,1,0,5,1,3,4,49,9,"2026-02-02","2026-02-05",1],["TEA3122",191,5,0,0,5,1,3,4,22,2,"2026-02-02","2026-02-05",1],["TEA1038",189,1,0,0,5,1,3,4,46,10,"2026-02-08","2026-02-11",3],["TEA6090",192,7,1,0,5,1,3,4,18,9,"2026-02-08","2026-02-11",3],["TEA1038",189,1,0,0,5,1,3,4,45,3,"2026-02-08","2026-02-11",3],["TEA6090",192,7,1,0,5,1,3,4,48,4,"2026-02-08","2026-02-11",3],["TEA6090",192,7,1,0,5,1,3,4,2,9,"2026-02-08","2026-02-11",1],["TRA7002",3,4,1,0,5,1,3,4,13,9,"2026-02-08","2026-02-11",3],["TRA7002",3,4,1,0,5,1,3,4,0,9,"2026-02-08","2026-02-11",3],["TEA1038",189,1,0,0,5,1,3,4,32,15,"2026-02-08","2026-02-11",3],["TRA7002",3,4,1,0,5,1,3,4,49,9,"2026-02-08","2026-02-11",1],["TEA1038",189,1,0,0,5,1,3,4,50,7,"2026-02-08","2026-02-11",1],["TEA6090",192,7,1,0,5,1,3,4,20,9,"2026-02-08","2026-02-11",3],["TEA1038",189,1,0,0,5,1,3,4,33,9,"2026-02-08","2026-02-11",3],["TEA6090",192,7,1,0,5,1,3,4,6,9,"2026-02-08","2026-02-11",3],["TRA7002",3,4,1,0,5,1,3,4,63,9,"2026-02-08","2026-02-11",3],["TRA7002",3,4,1,0,5,1,3,4,44,9,"2026-02-08","2026-02-11",3],["TBA0006",117,0,1,0,1,2,2,12,6,9,"2026-03-02","2026-03-03",2],["TBA7027",34,4,1,1,1,2,2,12,40,9,"2026-03-02","2026-03-03",2],["TBA7006",12,4,1,0,1,2,2,12,1,2,"2026-03-02","2026-03-03",2],["TBA0006",117,0,1,0,1,2,2,12,63,9,"2026-03-02","2026-03-03",2],["TBA7006",12,4,1,0,1,2,2,12,27,2,"2026-03-02","2026-03-03",2],["TBA7027",34,4,1,1,1,2,2,12,44,9,"2026-03-02","2026-03-03",2],["TRA7002",3,4,1,0,5,1,1,8,20,9,"2026-05-11","2026-05-11",0],["TEA1038",189,1,0,0,5,1,1,8,42,9,"2026-05-11","2026-05-11",0],["TRA7002",3,4,1,0,5,1,1,8,6,9,"2026-05-11","2026-05-11",0],["TEA1038",189,1,0,0,5,1,1,8,40,9,"2026-05-11","2026-05-11",0],["TEA6090",192,7,1,0,5,1,1,8,33,9,"2026-05-12","2026-05-12",0],["TEA6090",192,7,1,0,5,1,1,8,63,9,"2026-05-12","2026-05-12",0],["TEA5045",190,2,1,0,5,1,1,8,2,9,"2026-05-13","2026-05-13",0],["TEA3122",191,5,0,0,5,1,1,8,6,9,"2026-05-13","2026-05-13",0],["TEA5045",190,2,1,0,5,1,1,8,20,9,"2026-05-13","2026-05-13",0],["TEA3122",191,5,0,0,5,1,1,8,18,9,"2026-05-13","2026-05-13",0],["TEE7001",193,4,0,0,5,1,1,8,33,9,"2026-05-14","2026-05-15",0],["TEE7001",193,4,0,0,5,1,1,8,63,9,"2026-05-14","2026-05-15",0],["TBA3060",38,5,0,0,1,2,4,5,44,9,"2026-06-22","2026-06-22",0],["TBA3060",38,5,0,0,1,2,4,5,18,9,"2026-06-22","2026-06-22",0],["TEA1038",189,1,0,0,5,1,1,9,54,9,"2026-06-24","2026-06-24",1],["TEA1038",189,1,0,0,5,1,1,9,20,9,"2026-06-24","2026-06-24",0],["TEA1038",189,1,0,0,5,1,1,9,13,9,"2026-06-24","2026-06-24",0],["TEA1038",189,1,0,0,5,1,1,9,6,9,"2026-06-24","2026-06-24",1],["TEA1038",189,1,0,0,5,1,1,9,33,9,"2026-06-24","2026-06-24",0],["TEA1038",189,1,0,0,5,1,1,9,18,9,"2026-06-24","2026-06-24",1],["TEA1038",189,1,0,0,5,1,1,9,40,9,"2026-06-24","2026-06-24",1],["TEA1038",189,1,0,0,5,1,1,9,63,9,"2026-06-24","2026-06-24",1],["TEA1038",189,1,0,0,5,1,1,9,44,9,"2026-06-24","2026-06-24",1],["TEA1038",189,1,0,0,5,1,1,9,2,9,"2026-06-24","2026-06-24",0],["TEA6090",192,7,1,0,5,1,1,9,18,9,"2026-06-30","2026-06-30",1],["TEA6090",192,7,1,0,5,1,1,9,40,9,"2026-06-30","2026-06-30",1],["TEA6090",192,7,1,0,5,1,1,9,63,9,"2026-06-30","2026-06-30",1],["TEA6090",192,7,1,0,5,1,1,9,44,9,"2026-06-30","2026-06-30",1],["TEA6090",192,7,1,0,5,1,1,9,2,9,"2026-06-30","2026-06-30",0],["TEA6090",192,7,1,0,5,1,1,9,54,9,"2026-06-30","2026-06-30",1],["TEA6090",192,7,1,0,5,1,1,9,42,9,"2026-06-30","2026-06-30",0],["TEA6090",192,7,1,0,5,1,1,9,13,9,"2026-06-30","2026-06-30",0],["TEA6090",192,7,1,0,5,1,1,9,6,9,"2026-06-30","2026-06-30",1],["TEA6090",192,7,1,0,5,1,1,9,49,9,"2026-06-30","2026-06-30",1],["TEA4013",149,6,1,0,7,1,1,1,40,9,"2026-07-13","2026-07-13",0],["TEA4013",149,6,1,0,7,1,1,1,38,9,"2026-07-13","2026-07-13",0],["TFT2002",130,3,1,0,4,1,4,5,6,9,"2026-07-13","2026-07-14",0],["TEA4013",149,6,1,0,7,1,1,1,28,9,"2026-07-13","2026-07-13",0],["TEA4013",149,6,1,0,7,1,1,1,63,9,"2026-07-13","2026-07-13",0],["TEA4013",149,6,1,0,7,1,1,1,2,9,"2026-07-13","2026-07-13",0],["TFT2002",130,3,1,0,4,1,4,5,15,3,"2026-07-13","2026-07-14",0],["TBA3038",127,5,1,0,1,2,6,11,63,9,"2026-07-15","2026-07-15",1],["TFT2002",130,3,1,0,4,1,4,5,6,9,"2026-07-15","2026-07-15",0],["TBA3008",32,5,0,1,1,2,6,11,44,9,"2026-07-15","2026-07-15",1],["TBA3038",127,5,1,0,1,2,6,11,42,9,"2026-07-15","2026-07-15",0],["TBA3008",32,5,0,1,1,2,6,11,18,9,"2026-07-15","2026-07-15",0],["TFT2002",130,3,1,0,4,1,4,5,15,3,"2026-07-15","2026-07-15",0],["TBA5047",57,2,1,0,1,2,4,5,27,2,"2026-07-16","2026-07-16",0],["TBA3099",116,5,0,1,1,2,6,11,33,9,"2026-07-16","2026-07-16",0],["TBA3022",114,5,0,0,1,2,6,11,49,9,"2026-07-16","2026-07-16",1],["TBA5047",57,2,1,0,1,2,4,5,42,9,"2026-07-16","2026-07-16",0],["TBA3099",116,5,0,1,1,2,6,11,63,9,"2026-07-16","2026-07-16",0],["TBA3022",114,5,0,0,1,2,6,11,13,9,"2026-07-16","2026-07-16",0],["TBA0070",122,0,1,0,1,2,4,5,20,9,"2026-07-19","2026-07-19",0],["TBA0070",122,0,1,0,1,2,4,5,63,9,"2026-07-19","2026-07-19",0],["TBA6090",58,7,1,1,1,2,4,5,17,2,"2026-07-20","2026-07-20",0],["TBA0070",122,0,1,0,1,2,4,5,20,9,"2026-07-20","2026-07-20",0],["TBA6115",37,7,1,1,1,2,1,2,6,9,"2026-07-20","2026-07-20",1],["TBA6117",35,7,1,0,1,2,1,2,44,9,"2026-07-20","2026-07-20",1],["TRA7002",3,4,1,0,5,1,4,5,51,2,"2026-07-20","2026-07-20",0],["TBA6090",58,7,1,1,1,2,4,5,49,9,"2026-07-20","2026-07-20",0],["TBA6115",37,7,1,1,1,2,1,2,13,9,"2026-07-20","2026-07-20",1],["TBA0070",122,0,1,0,1,2,4,5,63,9,"2026-07-20","2026-07-20",0],["TBA6117",35,7,1,0,1,2,1,2,18,9,"2026-07-20","2026-07-20",1],["TRA7002",3,4,1,0,5,1,4,5,40,9,"2026-07-20","2026-07-20",0],["TFT3004",136,5,0,0,4,1,4,5,51,2,"2026-07-21","2026-07-21",0],["TRA4016",137,6,1,0,8,1,4,5,49,9,"2026-07-21","2026-07-21",0],["TBA4024",74,6,1,0,1,2,4,5,9,3,"2026-07-21","2026-07-21",0],["TFT3004",136,5,0,0,4,1,4,5,40,9,"2026-07-21","2026-07-21",0],["TRA4016",137,6,1,0,8,1,4,5,17,2,"2026-07-21","2026-07-21",0],["TBA4024",74,6,1,0,1,2,4,5,13,9,"2026-07-21","2026-07-21",0],["TEA7008",165,4,1,1,7,1,4,5,17,2,"2026-07-22","2026-07-22",0],["TRA7002",3,4,1,0,5,1,4,5,9,3,"2026-07-22","2026-07-22",0],["TBA3060",38,5,0,0,1,2,4,5,44,9,"2026-07-22","2026-07-22",0],["TBA6069",11,7,1,0,1,2,4,5,63,9,"2026-07-22","2026-07-22",0],["TBB0061",121,0,1,0,9,2,4,5,51,2,"2026-07-22","2026-07-22",0],["TEA7008",165,4,1,1,7,1,4,5,49,9,"2026-07-22","2026-07-22",0],["TRA7002",3,4,1,0,5,1,4,5,13,9,"2026-07-22","2026-07-22",0],["TBA3060",38,5,0,0,1,2,4,5,54,9,"2026-07-22","2026-07-22",0],["TBA6069",11,7,1,0,1,2,4,5,20,9,"2026-07-22","2026-07-22",0],["TBB0061",121,0,1,0,9,2,4,5,40,9,"2026-07-22","2026-07-22",0],["TBA3018",93,5,0,0,1,2,4,5,20,9,"2026-07-23","2026-07-23",0],["TBB3090",120,5,0,0,9,2,4,5,13,9,"2026-07-23","2026-07-23",0],["TFT1002",135,1,0,0,4,1,4,5,6,9,"2026-07-23","2026-07-23",0],["TFT2001",197,3,0,0,4,1,4,5,33,9,"2026-07-23","2026-07-23",0],["TBA3018",93,5,0,0,1,2,4,5,63,9,"2026-07-23","2026-07-23",0],["TBB3090",120,5,0,0,9,2,4,5,9,3,"2026-07-23","2026-07-23",0],["TFT1002",135,1,0,0,4,1,4,5,54,9,"2026-07-23","2026-07-23",0],["TFT2001",197,3,0,0,4,1,4,5,17,2,"2026-07-23","2026-07-23",0],["TFT2001",197,3,0,0,4,1,4,5,6,9,"2026-07-26","2026-07-26",0],["TBA6009",41,7,1,1,1,2,4,5,13,9,"2026-07-26","2026-07-26",0],["TFT2001",197,3,0,0,4,1,4,5,54,9,"2026-07-26","2026-07-26",0],["TBA6009",41,7,1,1,1,2,4,5,20,9,"2026-07-26","2026-07-26",0],["TBA5023",70,2,1,1,1,2,4,5,13,9,"2026-07-27","2026-07-27",0],["TEA7004",150,4,0,0,7,1,4,5,18,9,"2026-07-27","2026-07-27",0],["TEB3093",153,5,0,0,7,1,4,5,57,7,"2026-07-27","2026-07-27",0],["TBA5023",70,2,1,1,1,2,4,5,20,9,"2026-07-27","2026-07-27",0],["TEA2033",148,3,0,1,7,1,4,5,6,9,"2026-07-27","2026-07-27",0],["TEA7004",150,4,0,0,7,1,4,5,44,9,"2026-07-27","2026-07-27",0],["TEB3093",153,5,0,0,7,1,4,5,63,9,"2026-07-27","2026-07-27",0],["TEA2033",148,3,0,1,7,1,4,5,54,9,"2026-07-27","2026-07-27",0],["TBA6016",63,7,1,1,1,2,1,2,33,9,"2026-07-28","2026-07-28",1],["TBA7007",65,4,1,0,1,2,4,5,13,9,"2026-07-28","2026-07-28",0],["TRA7001",139,4,0,0,8,1,4,5,54,9,"2026-07-28","2026-07-28",0],["TBA4009",10,6,1,1,1,2,1,2,18,9,"2026-07-28","2026-07-28",2],["TBA4009",10,6,1,1,1,2,1,2,2,9,"2026-07-28","2026-07-28",0],["TEA2038",174,3,1,1,7,1,1,2,6,9,"2026-07-28","2026-07-28",1],["TBA6016",63,7,1,1,1,2,1,2,42,9,"2026-07-28","2026-07-28",1],["TBA7007",65,4,1,0,1,2,4,5,20,9,"2026-07-28","2026-07-28",0],["TRA7001",139,4,0,0,8,1,4,5,29,10,"2026-07-28","2026-07-28",0],["TBA4009",10,6,1,1,1,2,1,2,44,9,"2026-07-28","2026-07-28",1],["TFT1001",132,1,0,0,4,1,1,1,28,9,"2026-07-29","2026-07-29",0],["TFT1001",132,1,0,0,4,1,1,1,44,9,"2026-07-29","2026-07-29",0],["TFT1001",132,1,0,0,4,1,1,1,2,9,"2026-07-29","2026-07-29",0],["TBB3090",120,5,0,0,9,2,4,5,63,9,"2026-07-29","2026-07-29",0],["TBA1043",51,1,1,1,1,2,1,2,28,9,"2026-07-29","2026-07-29",0],["TEA7005",160,4,1,0,7,1,1,1,20,9,"2026-07-29","2026-07-29",0],["TEA2032",163,3,1,1,7,1,4,5,5,2,"2026-07-29","2026-07-29",0],["TBB0061",121,0,1,0,9,2,4,5,42,9,"2026-07-29","2026-07-29",0],["TEA7005",160,4,1,0,7,1,1,1,13,9,"2026-07-29","2026-07-29",0],["TEA7005",160,4,1,0,7,1,0,0,20,9,"2026-07-29","2026-07-30",0],["TFT1001",132,1,0,0,4,1,1,1,18,9,"2026-07-29","2026-07-29",0],["TFT1001",132,1,0,0,4,1,1,1,49,9,"2026-07-29","2026-07-29",0],["TBB3090",120,5,0,0,9,2,4,5,13,9,"2026-07-29","2026-07-29",0],["TBA1043",51,1,1,1,1,2,1,2,2,9,"2026-07-29","2026-07-29",0],["TEA2032",163,3,1,1,7,1,4,5,6,9,"2026-07-29","2026-07-29",0],["TEA7005",160,4,1,0,7,1,1,1,42,9,"2026-07-29","2026-07-29",0],["TBB0061",121,0,1,0,9,2,4,5,33,9,"2026-07-29","2026-07-29",0],["TEA7005",160,4,1,0,7,1,0,0,18,9,"2026-07-29","2026-07-30",0],["TEA1038",189,1,0,0,5,1,4,5,6,9,"2026-07-30","2026-07-30",0],["TEA7007",161,4,0,1,7,1,4,5,44,9,"2026-07-30","2026-07-30",0],["TEA3088",156,5,0,0,7,1,1,2,49,9,"2026-07-30","2026-07-30",2],["TBA1032",104,1,1,1,1,2,1,2,28,9,"2026-07-30","2026-07-30",0],["TBA4003",89,6,1,0,1,2,4,5,13,9,"2026-07-30","2026-07-30",0],["TBA7025",71,4,1,1,1,2,1,2,20,9,"2026-07-30","2026-07-30",1],["TEA7007",161,4,0,1,7,1,4,5,18,9,"2026-07-30","2026-07-30",0],["TEA1038",189,1,0,0,5,1,4,5,5,2,"2026-07-30","2026-07-30",0],["TBA1032",104,1,1,1,1,2,1,2,2,9,"2026-07-30","2026-07-30",0],["TBA4003",89,6,1,0,1,2,4,5,63,9,"2026-07-30","2026-07-30",0],["TBA7025",71,4,1,1,1,2,1,2,54,9,"2026-07-30","2026-07-30",1],["TBA7025",71,4,1,1,1,2,1,2,42,9,"2026-07-30","2026-07-30",1],["TEA4018",188,6,1,1,7,1,5,3,38,9,"2026-08-02","2026-08-03",0],["TEA3083",166,5,0,0,7,1,1,1,6,9,"2026-08-02","2026-08-02",0],["TEA5045",190,2,1,0,5,1,4,5,33,9,"2026-08-02","2026-08-02",0],["TEA3085",173,5,0,0,7,1,5,3,3,9,"2026-08-02","2026-08-03",0],["TEA3083",166,5,0,0,7,1,1,1,18,9,"2026-08-02","2026-08-02",0],["TEA5045",190,2,1,0,5,1,4,5,42,9,"2026-08-02","2026-08-02",0],["TEA4018",188,6,1,1,7,1,5,3,62,6,"2026-08-02","2026-08-03",2],["TEA3083",166,5,0,0,7,1,1,1,33,9,"2026-08-02","2026-08-02",0],["TEA3085",173,5,0,0,7,1,5,3,4,6,"2026-08-02","2026-08-03",2],["TEA7011",195,4,0,0,10,1,4,5,49,9,"2026-08-03","2026-08-03",0],["TBA4024",74,6,1,0,1,2,4,5,18,9,"2026-08-03","2026-08-03",0],["TEA7011",195,4,0,0,10,1,4,5,54,9,"2026-08-03","2026-08-03",0],["TBA4024",74,6,1,0,1,2,4,5,21,12,"2026-08-03","2026-08-03",0],["TKE7001",194,4,0,0,6,1,1,1,54,9,"2026-08-04","2026-08-04",0],["TRA4016",137,6,1,0,8,1,1,1,40,9,"2026-08-04","2026-08-04",0],["TKE7001",194,4,0,0,6,1,1,1,3,9,"2026-08-04","2026-08-04",0],["TRA4016",137,6,1,0,8,1,1,1,38,9,"2026-08-04","2026-08-04",0],["TEA3122",191,5,0,0,5,1,4,5,20,9,"2026-08-04","2026-08-04",0],["TBA1010",99,1,1,0,1,2,4,5,18,9,"2026-08-04","2026-08-04",0],["TRA4016",137,6,1,0,8,1,1,1,28,9,"2026-08-04","2026-08-04",0],["TKE7001",194,4,0,0,6,1,1,1,42,9,"2026-08-04","2026-08-04",0],["TRA4016",137,6,1,0,8,1,1,1,63,9,"2026-08-04","2026-08-04",0],["TKE7001",194,4,0,0,6,1,1,1,49,9,"2026-08-04","2026-08-04",0],["TRA4016",137,6,1,0,8,1,1,1,2,9,"2026-08-04","2026-08-04",0],["TEA3122",191,5,0,0,5,1,4,5,54,9,"2026-08-04","2026-08-04",0],["TBA1010",99,1,1,0,1,2,4,5,21,12,"2026-08-04","2026-08-04",0],["TRA7002",3,4,1,0,5,1,1,2,20,9,"2026-08-06","2026-08-06",1],["TRA7002",3,4,1,0,5,1,1,2,6,9,"2026-08-06","2026-08-06",1],["TBA7016",90,4,1,0,1,2,1,2,49,9,"2026-08-09","2026-08-09",1],["TFT4001",131,6,0,0,4,1,4,5,9,3,"2026-08-09","2026-08-09",0],["TBA7016",90,4,1,0,1,2,1,2,63,9,"2026-08-09","2026-08-09",0],["TFT4001",131,6,0,0,4,1,4,5,31,3,"2026-08-09","2026-08-09",0],["TBA7016",90,4,1,0,1,2,1,2,40,9,"2026-08-09","2026-08-09",1],["TEA3119",146,5,0,0,7,1,1,1,18,9,"2026-08-10","2026-08-10",0],["TEA3119",146,5,0,0,7,1,1,1,33,9,"2026-08-10","2026-08-10",0],["TBA1039",111,1,1,1,1,2,4,5,9,3,"2026-08-10","2026-08-10",0],["TRA3002",141,5,0,0,8,1,1,1,42,9,"2026-08-10","2026-08-10",0],["TEA3119",146,5,0,0,7,1,1,1,6,9,"2026-08-10","2026-08-10",0],["TBA1039",111,1,1,1,1,2,4,5,31,3,"2026-08-10","2026-08-10",0],["TRA3002",141,5,0,0,8,1,1,1,54,9,"2026-08-10","2026-08-10",0],["TRA3002",141,5,0,0,8,1,1,1,49,9,"2026-08-10","2026-08-10",0],["TBA3001",119,5,0,0,1,2,1,2,54,9,"2026-08-11","2026-08-11",1],["TFT1002",135,1,0,0,4,1,4,5,13,9,"2026-08-11","2026-08-12",0],["TBA3001",119,5,0,0,1,2,1,2,33,9,"2026-08-11","2026-08-11",1],["TFT1002",135,1,0,0,4,1,4,5,9,3,"2026-08-11","2026-08-12",0],["THA2002",0,3,1,0,0,0,4,5,44,9,"2026-08-12","2026-08-12",0],["TEA1029",183,1,0,0,7,1,4,5,33,9,"2026-08-12","2026-08-12",0],["TBA2016",5,3,1,0,1,2,4,5,18,9,"2026-08-12","2026-08-12",0],["TFT3001",198,5,0,0,4,1,4,5,6,9,"2026-08-12","2026-08-12",0],["THA2002",0,3,1,0,0,0,4,5,16,3,"2026-08-12","2026-08-12",0],["TEA1029",183,1,0,0,7,1,4,5,58,3,"2026-08-12","2026-08-12",0],["TBA2016",5,3,1,0,1,2,4,5,40,9,"2026-08-12","2026-08-12",0],["TFT3001",198,5,0,0,4,1,4,5,15,3,"2026-08-12","2026-08-12",0],["TFT1002",135,1,0,0,4,1,4,5,13,9,"2026-08-13","2026-08-13",0],["TEA3120",154,5,0,0,7,1,4,5,10,2,"2026-08-13","2026-08-13",0],["TEB3091",180,5,0,0,7,1,4,5,2,9,"2026-08-13","2026-08-13",0],["TEA2022",152,3,0,0,7,1,1,2,18,9,"2026-08-13","2026-08-13",1],["TFT3002",196,5,0,0,4,1,4,5,6,9,"2026-08-13","2026-08-13",0],["TEA2022",152,3,0,0,7,1,4,5,18,9,"2026-08-13","2026-08-13",0],["TEA2033",148,3,0,1,7,1,4,5,52,3,"2026-08-13","2026-08-13",0],["TEA1038",189,1,0,0,5,1,4,5,33,9,"2026-08-13","2026-08-13",0],["TFT1002",135,1,0,0,4,1,4,5,9,3,"2026-08-13","2026-08-13",0],["TEA3120",154,5,0,0,7,1,4,5,42,9,"2026-08-13","2026-08-13",0],["TEB3091",180,5,0,0,7,1,4,5,20,9,"2026-08-13","2026-08-13",0],["TEA2022",152,3,0,0,7,1,1,2,44,9,"2026-08-13","2026-08-13",1],["TFT3002",196,5,0,0,4,1,4,5,15,3,"2026-08-13","2026-08-13",0],["TEA2033",148,3,0,1,7,1,4,5,40,9,"2026-08-13","2026-08-13",0],["TEA2022",152,3,0,0,7,1,4,5,44,9,"2026-08-13","2026-08-13",0],["TEA1038",189,1,0,0,5,1,4,5,58,3,"2026-08-13","2026-08-13",0],["TEA0075",182,0,1,1,7,1,1,1,2,9,"2026-08-16","2026-08-16",0],["TBA3061",7,5,0,0,1,2,1,2,6,9,"2026-08-16","2026-08-16",2],["TEA0073",170,0,1,0,7,1,3,6,54,9,"2026-08-16","2026-08-18",2],["TEA0073",170,0,1,0,7,1,3,6,2,9,"2026-08-16","2026-08-18",1],["TEA2023",143,3,1,0,7,1,3,6,13,9,"2026-08-16","2026-08-18",2],["TEA0075",182,0,1,1,7,1,1,1,18,9,"2026-08-16","2026-08-16",0],["TEA2023",143,3,1,0,7,1,3,6,49,9,"2026-08-16","2026-08-18",4],["TEA0073",170,0,1,0,7,1,3,6,18,9,"2026-08-16","2026-08-18",2],["TEA0075",182,0,1,1,7,1,1,1,54,9,"2026-08-16","2026-08-16",0],["TEA2023",143,3,1,0,7,1,3,6,44,9,"2026-08-16","2026-08-18",2],["TRA7002",3,4,1,0,5,1,4,5,6,9,"2026-08-17","2026-08-18",0],["TEB3091",180,5,0,0,7,1,4,5,33,9,"2026-08-17","2026-08-17",0],["TRA7002",3,4,1,0,5,1,4,5,15,3,"2026-08-17","2026-08-18",0],["TEB3091",180,5,0,0,7,1,4,5,47,1,"2026-08-17","2026-08-17",0],["TEA2027",177,3,0,0,7,1,4,5,42,9,"2026-08-18","2026-08-18",0],["TEA5044",147,2,1,1,7,1,5,3,28,9,"2026-08-18","2026-08-19",0],["TBA6058",68,7,1,0,1,2,1,2,6,9,"2026-08-18","2026-08-18",2],["TEA2027",177,3,0,0,7,1,4,5,33,9,"2026-08-18","2026-08-18",0],["TEA5044",147,2,1,1,7,1,5,3,25,8,"2026-08-18","2026-08-19",2],["TEA3118",178,5,1,0,7,1,4,5,42,9,"2026-08-19","2026-08-20",0],["TRA4016",137,6,1,0,8,1,4,5,27,2,"2026-08-19","2026-08-19",0],["TRA7002",3,4,1,0,5,1,4,5,15,3,"2026-08-19","2026-08-19",0],["TEA3118",178,5,1,0,7,1,4,5,44,9,"2026-08-19","2026-08-20",0],["TRA4016",137,6,1,0,8,1,4,5,17,2,"2026-08-19","2026-08-19",0],["TRA7002",3,4,1,0,5,1,4,5,13,9,"2026-08-19","2026-08-19",0],["TBB3088",109,5,0,0,9,2,4,5,17,2,"2026-08-20","2026-08-20",0],["TBA0079",73,0,1,1,1,2,4,5,63,9,"2026-08-20","2026-08-20",0],["TBA0054",47,0,1,0,1,2,4,5,40,9,"2026-08-20","2026-08-20",0],["TRA7002",3,4,1,0,5,1,4,5,15,3,"2026-08-20","2026-08-20",0],["TBB3088",109,5,0,0,9,2,4,5,27,2,"2026-08-20","2026-08-20",0],["TBA0079",73,0,1,1,1,2,4,5,13,9,"2026-08-20","2026-08-20",0],["TRA7002",3,4,1,0,5,1,4,5,6,9,"2026-08-20","2026-08-20",0],["TBA0054",47,0,1,0,1,2,4,5,49,9,"2026-08-20","2026-08-20",0],["TBA4023",45,6,1,0,1,2,5,3,38,9,"2026-08-23","2026-08-24",2],["TBA3087",86,5,1,1,2,2,4,5,18,9,"2026-08-23","2026-08-23",0],["TEA7011",195,4,0,0,10,1,1,1,28,9,"2026-08-23","2026-08-23",0],["TBA7013",124,4,1,0,1,2,5,3,4,6,"2026-08-23","2026-08-24",1],["TEA7011",195,4,0,0,10,1,1,1,42,9,"2026-08-23","2026-08-23",0],["TFT0001",134,0,1,0,4,1,4,5,17,2,"2026-08-23","2026-08-23",0],["TBA3009",79,5,0,0,1,2,4,5,44,9,"2026-08-23","2026-08-23",0],["TBA4023",45,6,1,0,1,2,5,3,62,6,"2026-08-23","2026-08-24",0],["TBA3087",86,5,1,1,2,2,4,5,40,9,"2026-08-23","2026-08-23",0],["TBA7013",124,4,1,0,1,2,5,3,3,9,"2026-08-23","2026-08-24",1],["TEA7011",195,4,0,0,10,1,1,1,54,9,"2026-08-23","2026-08-23",0],["TFT0001",134,0,1,0,4,1,4,5,27,2,"2026-08-23","2026-08-23",0],["TEA7011",195,4,0,0,10,1,1,1,49,9,"2026-08-23","2026-08-23",0],["TBA3009",79,5,0,0,1,2,4,5,54,9,"2026-08-23","2026-08-23",0],["TRA4016",137,6,1,0,8,1,4,5,6,9,"2026-08-24","2026-08-24",0],["TEA7005",160,4,1,0,7,1,3,6,13,9,"2026-08-24","2026-08-27",2],["TEB3093",153,5,0,0,7,1,4,5,44,9,"2026-08-24","2026-08-24",0],["TFT0001",134,0,1,0,4,1,4,5,17,2,"2026-08-24","2026-08-24",0],["TBB1030",108,1,0,0,9,2,1,2,24,7,"2026-08-24","2026-08-24",2],["TRA4016",137,6,1,0,8,1,4,5,5,2,"2026-08-24","2026-08-24",0],["TEA7005",160,4,1,0,7,1,3,6,42,9,"2026-08-24","2026-08-27",2],["TEB3093",153,5,0,0,7,1,4,5,54,9,"2026-08-24","2026-08-24",0],["TFT0001",134,0,1,0,4,1,4,5,27,2,"2026-08-24","2026-08-24",0],["TEA7005",160,4,1,0,7,1,3,6,33,9,"2026-08-24","2026-08-27",1],["TEA7001",157,4,0,0,7,1,4,5,44,9,"2026-08-26","2026-08-26",0],["TEB1031",179,1,0,0,7,1,1,2,24,7,"2026-08-26","2026-08-26",2],["TEA7001",157,4,0,0,7,1,4,5,11,5,"2026-08-26","2026-08-26",0],["TEB3091",180,5,0,0,7,1,4,5,6,9,"2026-08-27","2026-08-27",0],["TEA4013",149,6,1,0,7,1,4,5,44,9,"2026-08-27","2026-08-27",0],["TEB3091",180,5,0,0,7,1,4,5,11,5,"2026-08-27","2026-08-27",0],["TEA4013",149,6,1,0,7,1,4,5,54,9,"2026-08-27","2026-08-27",0],["TEA5041",158,2,1,1,7,1,3,6,44,9,"2026-09-07","2026-09-09",2],["TEA4011",164,6,1,0,7,1,3,6,20,9,"2026-09-07","2026-09-09",2],["TEA4011",164,6,1,0,7,1,3,6,40,9,"2026-09-07","2026-09-09",1],["TEA1036",175,1,1,0,7,1,3,6,18,9,"2026-09-07","2026-09-09",3],["TEA5041",158,2,1,1,7,1,3,6,6,9,"2026-09-07","2026-09-09",2],["TEA4011",164,6,1,0,7,1,3,6,42,9,"2026-09-07","2026-09-09",2],["TEA1036",175,1,1,0,7,1,3,6,54,9,"2026-09-07","2026-09-09",2],["TEA1036",175,1,1,0,7,1,3,6,33,9,"2026-09-07","2026-09-09",1],["TEA5041",158,2,1,1,7,1,3,6,63,9,"2026-09-07","2026-09-09",2],["TEA5040",162,2,1,1,7,1,1,1,13,9,"2026-09-09","2026-09-09",0],["TEA5040",162,2,1,1,7,1,1,1,38,9,"2026-09-09","2026-09-09",0],["TEA5040",162,2,1,1,7,1,1,1,2,9,"2026-09-09","2026-09-09",0],["TEA5040",162,2,1,1,7,1,1,1,28,9,"2026-09-09","2026-09-09",0],["TEA5040",162,2,1,1,7,1,1,1,3,9,"2026-09-09","2026-09-09",0],["TEA5040",162,2,1,1,7,1,1,1,49,9,"2026-09-09","2026-09-09",0],["TBA4018",36,6,1,0,1,2,1,1,28,9,"2026-09-14","2026-09-14",0],["TBA4018",36,6,1,0,1,2,1,1,63,9,"2026-09-14","2026-09-14",0],["TBA4018",36,6,1,0,1,2,1,1,2,9,"2026-09-14","2026-09-14",0],["TBA4018",36,6,1,0,1,2,1,1,40,9,"2026-09-14","2026-09-14",0],["TBA4018",36,6,1,0,1,2,1,1,38,9,"2026-09-14","2026-09-14",0],["TRA7001",139,4,0,0,8,1,1,1,20,9,"2026-09-15","2026-09-15",0],["TEA4014",184,6,1,0,7,1,1,1,28,9,"2026-09-15","2026-09-15",0],["TRA7001",139,4,0,0,8,1,1,1,3,9,"2026-09-15","2026-09-15",0],["TEA4014",184,6,1,0,7,1,1,1,42,9,"2026-09-15","2026-09-15",0],["TRA7001",139,4,0,0,8,1,1,1,13,9,"2026-09-15","2026-09-15",0],["TEA4014",184,6,1,0,7,1,1,1,54,9,"2026-09-15","2026-09-15",0],["TRA7001",139,4,0,0,8,1,1,1,44,9,"2026-09-15","2026-09-15",0],["TEA4014",184,6,1,0,7,1,1,1,49,9,"2026-09-15","2026-09-15",0],["TEA2026",159,3,1,0,7,1,1,1,28,9,"2026-09-19","2026-09-19",0],["TBA2013",49,3,1,0,1,2,1,1,38,9,"2026-09-19","2026-09-19",0],["TEA2026",159,3,1,0,7,1,1,1,40,9,"2026-09-19","2026-09-19",0],["TBA2002",92,3,0,0,1,2,1,1,42,9,"2026-09-19","2026-09-19",0],["TBA2002",92,3,0,0,1,2,1,1,33,9,"2026-09-19","2026-09-19",0],["TBA2013",49,3,1,0,1,2,1,1,13,9,"2026-09-19","2026-09-19",0],["TEA2026",159,3,1,0,7,1,1,1,54,9,"2026-09-19","2026-09-19",0],["TBA2013",49,3,1,0,1,2,1,1,49,9,"2026-09-19","2026-09-19",0],["TEA2026",159,3,1,0,7,1,1,1,2,9,"2026-09-19","2026-09-19",0],["TBA2002",92,3,0,0,1,2,1,1,3,9,"2026-09-19","2026-09-19",0],["TEA2022",152,3,0,0,7,1,1,1,6,9,"2026-09-20","2026-09-20",0],["TEA2022",152,3,0,0,7,1,1,1,63,9,"2026-09-20","2026-09-20",0],["TEA2022",152,3,0,0,7,1,1,1,44,9,"2026-09-20","2026-09-20",0],["TBA7028",72,4,1,1,1,2,1,2,20,9,"2026-09-21","2026-09-21",1],["TBA5043",14,2,1,0,1,2,1,2,63,9,"2026-09-21","2026-09-21",2],["TEA1038",189,1,0,0,5,1,4,7,49,9,"2026-09-21","2026-09-22",1],["TEA1038",189,1,0,0,5,1,4,7,33,9,"2026-09-21","2026-09-22",1],["TBA2003",107,3,1,0,1,2,1,2,44,9,"2026-09-21","2026-09-21",1],["TBA7028",72,4,1,1,1,2,1,2,54,9,"2026-09-21","2026-09-21",1],["TBA7028",72,4,1,1,1,2,1,2,13,9,"2026-09-21","2026-09-21",1],["TBA5043",14,2,1,0,1,2,1,2,6,9,"2026-09-21","2026-09-21",1],["TEA1038",189,1,0,0,5,1,4,7,12,14,"2026-09-21","2026-09-22",1],["TBA2003",107,3,1,0,1,2,1,2,40,9,"2026-09-21","2026-09-21",2],["TEA7001",157,4,0,0,7,1,1,1,20,9,"2026-09-22","2026-09-22",0],["TEA7001",157,4,0,0,7,1,1,1,3,9,"2026-09-22","2026-09-22",0],["TEA1031",169,1,1,0,7,1,1,1,12,14,"2026-09-22","2026-09-22",0],["TBA4020",113,6,1,0,1,2,5,3,25,8,"2026-09-22","2026-09-23",2],["TEA2041",168,3,0,1,7,1,1,2,40,9,"2026-09-22","2026-09-22",2],["TBA7018",23,4,0,0,1,2,1,1,18,9,"2026-09-22","2026-09-22",0],["TEA7001",157,4,0,0,7,1,1,1,13,9,"2026-09-22","2026-09-22",0],["TEA1031",169,1,1,0,7,1,1,1,49,9,"2026-09-22","2026-09-22",0],["TBA4020",113,6,1,0,1,2,5,3,28,9,"2026-09-22","2026-09-23",0],["TEA1031",169,1,1,0,7,1,1,1,33,9,"2026-09-22","2026-09-22",0],["TEA2041",168,3,0,1,7,1,1,2,44,9,"2026-09-22","2026-09-22",1],["TBA7018",23,4,0,0,1,2,1,1,6,9,"2026-09-22","2026-09-22",0],["TEA6081",167,7,1,0,7,1,1,2,54,9,"2026-09-23","2026-09-23",1],["TRA1001",138,1,1,0,8,1,4,7,12,14,"2026-09-23","2026-09-24",1],["TEA6081",167,7,1,0,7,1,1,2,13,9,"2026-09-23","2026-09-23",1],["TEA6081",167,7,1,0,7,1,1,2,38,9,"2026-09-23","2026-09-23",0],["TRA1001",138,1,1,0,8,1,4,7,49,9,"2026-09-23","2026-09-24",1],["TEA6081",167,7,1,0,7,1,1,2,18,9,"2026-09-23","2026-09-23",3],["TRA1001",138,1,1,0,8,1,4,7,33,9,"2026-09-23","2026-09-24",1],["TEA6081",167,7,1,0,7,1,1,2,3,9,"2026-09-23","2026-09-23",0],["TFT6002",133,7,1,0,4,1,1,2,20,9,"2026-09-27","2026-09-27",1],["TBA6041",26,7,1,0,1,2,1,2,63,9,"2026-09-27","2026-09-27",1],["TBB0061",121,0,1,0,9,2,4,7,44,9,"2026-09-27","2026-09-28",1],["TFT6002",133,7,1,0,4,1,1,2,13,9,"2026-09-27","2026-09-27",1],["TBA6041",26,7,1,0,1,2,1,2,6,9,"2026-09-27","2026-09-27",1],["TBB0061",121,0,1,0,9,2,4,7,37,13,"2026-09-27","2026-09-28",1],["TBB0061",121,0,1,0,9,2,4,7,2,9,"2026-09-27","2026-09-28",1],["TEA6090",192,7,1,0,5,1,4,7,30,16,"2026-09-28","2026-09-29",1],["TEA6090",192,7,1,0,5,1,4,7,5,2,"2026-09-28","2026-09-29",2],["TFT0001",134,0,1,0,4,1,4,7,63,9,"2026-09-28","2026-09-29",1],["TFT0001",134,0,1,0,4,1,4,7,14,11,"2026-09-28","2026-09-29",1],["TFT3002",196,5,0,0,4,1,4,7,19,14,"2026-09-28","2026-09-29",1],["TEE7001",193,4,0,0,5,1,4,7,13,9,"2026-09-28","2026-09-29",1],["TEA6090",192,7,1,0,5,1,4,7,33,9,"2026-09-28","2026-09-29",1],["TFT0001",134,0,1,0,4,1,4,7,6,9,"2026-09-28","2026-09-29",1],["TFT3002",196,5,0,0,4,1,4,7,42,9,"2026-09-28","2026-09-29",1],["TFT3002",196,5,0,0,4,1,4,7,8,13,"2026-09-28","2026-09-29",1],["TEE7001",193,4,0,0,5,1,4,7,41,11,"2026-09-28","2026-09-29",1],["TEE7001",193,4,0,0,5,1,4,7,55,11,"2026-09-28","2026-09-29",1],["TEB0062",185,0,1,0,7,1,4,7,20,9,"2026-09-29","2026-09-30",1],["TEB0062",185,0,1,0,7,1,4,7,2,9,"2026-09-29","2026-09-30",1],["TEB0062",185,0,1,0,7,1,4,7,44,9,"2026-09-29","2026-09-30",1],["TBA6021",8,7,1,0,1,2,1,2,18,9,"2026-09-30","2026-09-30",3],["TBA5001",54,2,0,0,1,2,4,7,30,16,"2026-09-30","2026-10-01",1],["TEA2032",163,3,1,1,7,1,4,7,41,11,"2026-09-30","2026-10-01",1],["TBA5001",54,2,0,0,1,2,4,7,5,2,"2026-09-30","2026-10-01",1],["TEA2032",163,3,1,1,7,1,4,7,55,11,"2026-09-30","2026-10-01",1],["TRA0001",140,0,1,0,8,1,4,7,63,9,"2026-09-30","2026-10-01",1],["TRA0001",140,0,1,0,8,1,4,7,14,11,"2026-09-30","2026-10-01",1],["TFT3004",136,5,0,0,4,1,4,7,42,9,"2026-09-30","2026-10-01",1],["TFT3004",136,5,0,0,4,1,4,7,8,13,"2026-09-30","2026-10-01",1],["TBA6021",8,7,1,0,1,2,1,2,54,9,"2026-09-30","2026-09-30",1],["TBA6021",8,7,1,0,1,2,1,2,3,9,"2026-09-30","2026-09-30",0],["TBA5001",54,2,0,0,1,2,4,7,33,9,"2026-09-30","2026-10-01",1],["TEA2032",163,3,1,1,7,1,4,7,13,9,"2026-09-30","2026-10-01",1],["TRA0001",140,0,1,0,8,1,4,7,6,9,"2026-09-30","2026-10-01",1],["TFT3004",136,5,0,0,4,1,4,7,19,14,"2026-09-30","2026-10-01",1],["TEA3110",145,5,0,0,7,1,1,1,40,9,"2026-10-05","2026-10-05",0],["TFT3003",200,5,0,0,4,1,1,1,54,9,"2026-10-05","2026-10-05",0],["TFT3003",200,5,0,0,4,1,1,1,2,9,"2026-10-05","2026-10-05",0],["TEA1034",181,1,0,1,7,1,1,2,53,7,"2026-10-05","2026-10-05",2],["TEA1034",181,1,0,1,7,1,1,2,24,7,"2026-10-05","2026-10-05",2],["TEA3110",145,5,0,0,7,1,1,1,20,9,"2026-10-05","2026-10-05",0],["TEA3110",145,5,0,0,7,1,1,1,63,9,"2026-10-05","2026-10-05",0],["TFT3003",200,5,0,0,4,1,1,1,6,9,"2026-10-05","2026-10-05",0],["TEA1034",181,1,0,1,7,1,1,2,23,7,"2026-10-05","2026-10-05",2],["TBA5022",88,2,1,0,1,2,1,2,63,9,"2026-10-06","2026-10-06",1],["TEA5043",187,2,1,1,7,1,1,2,40,9,"2026-10-06","2026-10-06",2],["TEA1043",144,1,0,1,7,1,1,2,53,7,"2026-10-06","2026-10-06",2],["TEA1043",144,1,0,1,7,1,1,2,24,7,"2026-10-06","2026-10-06",2],["TBA3087",86,5,1,1,2,2,1,1,6,9,"2026-10-06","2026-10-06",0],["TBA5022",88,2,1,0,1,2,1,2,13,9,"2026-10-06","2026-10-06",1],["TEA5043",187,2,1,1,7,1,1,2,42,9,"2026-10-06","2026-10-06",1],["TEA5043",187,2,1,1,7,1,1,2,44,9,"2026-10-06","2026-10-06",1],["TEA1043",144,1,0,1,7,1,1,2,23,7,"2026-10-06","2026-10-06",2],["TBA3087",86,5,1,1,2,2,1,1,18,9,"2026-10-06","2026-10-06",0],["TBA3087",86,5,1,1,2,2,1,1,33,9,"2026-10-06","2026-10-06",0],["TBA5022",88,2,1,0,1,2,1,2,20,9,"2026-10-06","2026-10-06",1],["TEA4029",155,6,0,0,7,1,1,2,40,9,"2026-10-07","2026-10-07",2],["TBA1003",94,1,0,0,1,2,1,2,24,7,"2026-10-07","2026-10-07",2],["TBA4011",19,6,1,0,1,2,1,2,42,9,"2026-10-07","2026-10-07",2],["TBB5038",118,2,0,0,9,2,1,2,13,9,"2026-10-07","2026-10-07",1],["TBA6069",11,7,1,0,1,2,1,1,2,9,"2026-10-07","2026-10-07",0],["TBA6069",11,7,1,0,1,2,1,2,2,9,"2026-10-07","2026-10-07",0],["TBA1003",94,1,0,0,1,2,1,2,23,7,"2026-10-07","2026-10-07",2],["TEA4029",155,6,0,0,7,1,1,2,44,9,"2026-10-07","2026-10-07",1],["TBA4011",19,6,1,0,1,2,1,2,18,9,"2026-10-07","2026-10-07",2],["TBB5038",118,2,0,0,9,2,1,2,20,9,"2026-10-07","2026-10-07",1],["TBA6069",11,7,1,0,1,2,1,1,54,9,"2026-10-07","2026-10-07",0],["TBB5038",118,2,0,0,9,2,1,2,63,9,"2026-10-07","2026-10-07",1],["TBA6069",11,7,1,0,1,2,1,2,54,9,"2026-10-07","2026-10-07",1],["TBA1014",76,1,1,0,1,2,1,2,2,9,"2026-10-08","2026-10-08",1],["TBA5032",112,2,1,0,1,2,1,2,6,9,"2026-10-08","2026-10-08",1],["TBB3088",109,5,0,0,9,2,1,2,33,9,"2026-10-08","2026-10-08",2],["TBA5007",15,2,1,1,1,2,1,2,40,9,"2026-10-08","2026-10-08",2],["TBA1014",76,1,1,0,1,2,1,1,54,9,"2026-10-08","2026-10-08",0],["TFT0003",199,0,1,0,4,1,1,2,13,9,"2026-10-08","2026-10-08",1],["TBA1014",76,1,1,0,1,2,1,2,54,9,"2026-10-08","2026-10-08",1],["TBA5032",112,2,1,0,1,2,1,2,63,9,"2026-10-08","2026-10-08",1],["TBA5007",15,2,1,1,1,2,1,2,18,9,"2026-10-08","2026-10-08",2],["TBA5007",15,2,1,1,1,2,1,2,44,9,"2026-10-08","2026-10-08",1],["TFT0003",199,0,1,0,4,1,1,2,20,9,"2026-10-08","2026-10-08",1],["TBA1014",76,1,1,0,1,2,1,1,2,9,"2026-10-08","2026-10-08",0],["TEA3132",172,5,0,1,7,1,1,2,38,9,"2026-10-12","2026-10-12",0],["TBA6116",9,7,1,1,1,2,1,2,54,9,"2026-10-12","2026-10-12",1],["TFT4001",131,6,0,0,4,1,1,1,63,9,"2026-10-12","2026-10-12",0],["TBA3003",82,5,0,1,1,2,1,2,63,9,"2026-10-12","2026-10-12",1],["TFT3004",136,5,0,0,4,1,1,1,28,9,"2026-10-12","2026-10-12",0],["TBA7004",67,4,1,0,1,2,1,2,20,9,"2026-10-12","2026-10-12",2],["TFT3004",136,5,0,0,4,1,1,1,42,9,"2026-10-12","2026-10-12",0],["TEA3132",172,5,0,1,7,1,1,2,3,9,"2026-10-12","2026-10-12",0],["TEA3132",172,5,0,1,7,1,1,2,44,9,"2026-10-12","2026-10-12",2],["TBA6116",9,7,1,1,1,2,1,2,28,9,"2026-10-12","2026-10-12",0],["TFT4001",131,6,0,0,4,1,1,1,40,9,"2026-10-12","2026-10-12",0],["TFT4001",131,6,0,0,4,1,1,1,38,9,"2026-10-12","2026-10-12",0],["TBA3003",82,5,0,1,1,2,1,2,49,9,"2026-10-12","2026-10-12",2],["TFT3004",136,5,0,0,4,1,1,1,54,9,"2026-10-12","2026-10-12",0],["TBA7004",67,4,1,0,1,2,1,2,13,9,"2026-10-12","2026-10-12",2],["TFT3004",136,5,0,0,4,1,1,1,49,9,"2026-10-12","2026-10-12",0],["TEA3132",172,5,0,1,7,1,1,2,40,9,"2026-10-12","2026-10-12",2],["TBA2007",101,3,1,1,1,2,1,2,6,9,"2026-10-12","2026-10-12",1],["TEB3091",180,5,0,0,7,1,1,1,18,9,"2026-10-14","2026-10-14",0],["TEB3091",180,5,0,0,7,1,1,1,33,9,"2026-10-14","2026-10-14",0],["THA7001",2,4,0,0,0,0,1,2,13,9,"2026-10-14","2026-10-14",2],["TBA5049",105,2,0,1,1,2,1,2,28,9,"2026-10-14","2026-10-14",0],["TBA5006",81,2,1,0,1,2,1,2,38,9,"2026-10-14","2026-10-14",0],["TBA5049",105,2,0,1,1,2,1,2,33,9,"2026-10-14","2026-10-14",2],["TEA6083",151,7,1,0,3,1,1,2,42,9,"2026-10-14","2026-10-14",2],["TEB3091",180,5,0,0,7,1,1,1,6,9,"2026-10-14","2026-10-14",0],["THA7001",2,4,0,0,0,0,1,2,20,9,"2026-10-14","2026-10-14",2],["THA7001",2,4,0,0,0,0,1,2,44,9,"2026-10-14","2026-10-14",2],["TBA5006",81,2,1,0,1,2,1,2,40,9,"2026-10-14","2026-10-14",2],["TBA5049",105,2,0,1,1,2,1,2,54,9,"2026-10-14","2026-10-14",2],["TEA6083",151,7,1,0,3,1,1,2,18,9,"2026-10-14","2026-10-14",3],["TEA0079",142,0,0,1,7,1,1,2,49,9,"2026-10-14","2026-10-14",2],["TEA6083",151,7,1,0,3,1,1,2,3,9,"2026-10-14","2026-10-14",0],["TBA6118",98,7,1,0,1,2,1,2,42,9,"2026-10-15","2026-10-15",2],["TBA4016",21,6,1,0,1,2,1,2,28,9,"2026-10-15","2026-10-15",0],["TBA6006",61,7,1,1,1,2,1,2,63,9,"2026-10-15","2026-10-15",1],["TBA4016",21,6,1,0,1,2,1,2,33,9,"2026-10-15","2026-10-15",2],["TBA5024",55,2,1,0,1,2,1,2,38,9,"2026-10-15","2026-10-15",0],["TBA7017",59,4,1,0,1,2,1,2,6,9,"2026-10-15","2026-10-15",1],["TBA6118",98,7,1,0,1,2,1,2,18,9,"2026-10-15","2026-10-15",1],["TBA0044",22,0,1,0,1,2,1,2,49,9,"2026-10-15","2026-10-15",2],["TBA6006",61,7,1,1,1,2,1,2,20,9,"2026-10-15","2026-10-15",1],["TBA4016",21,6,1,0,1,2,1,2,54,9,"2026-10-15","2026-10-15",2],["TBA5024",55,2,1,0,1,2,1,2,40,9,"2026-10-15","2026-10-15",3],["TBA7008",77,4,1,0,1,2,1,2,3,9,"2026-10-20","2026-10-20",0],["TBA0068",85,0,1,1,2,2,4,7,18,9,"2026-10-20","2026-10-20",1],["TBA4025",83,6,0,1,1,2,1,2,28,9,"2026-10-20","2026-10-20",0],["TBA0068",85,0,1,1,2,2,4,7,5,2,"2026-10-20","2026-10-20",1],["TBA7008",77,4,1,0,1,2,1,2,42,9,"2026-10-20","2026-10-20",3],["TBA0068",85,0,1,1,2,2,4,7,43,2,"2026-10-20","2026-10-20",1],["TBA4025",83,6,0,1,1,2,1,2,33,9,"2026-10-20","2026-10-20",2],["TBA4026",66,6,1,1,1,2,1,2,6,9,"2026-10-21","2026-10-21",3],["TBA3020",95,5,0,0,1,2,1,2,54,9,"2026-10-21","2026-10-21",2],["TEA3085",173,5,0,0,7,1,1,2,28,9,"2026-10-21","2026-10-21",0],["TBA3020",95,5,0,0,1,2,1,2,33,9,"2026-10-21","2026-10-21",2],["TEA3085",173,5,0,0,7,1,1,2,49,9,"2026-10-21","2026-10-21",1],["TBA3019",78,5,0,0,1,2,1,2,49,9,"2026-10-22","2026-10-22",2],["THA5001",1,2,1,0,0,0,1,2,63,9,"2026-10-26","2026-10-26",1],["TBA0007",44,0,1,0,1,2,1,2,49,9,"2026-10-28","2026-10-28",3],["TBA0074",43,0,1,1,1,2,1,2,54,9,"2026-10-28","2026-10-28",3],["TBA0046",126,0,1,0,1,2,1,2,28,9,"2026-10-28","2026-10-28",1],["TBA0007",44,0,1,0,1,2,1,2,38,9,"2026-10-28","2026-10-28",2],["TBA0074",43,0,1,1,1,2,1,2,3,9,"2026-10-28","2026-10-28",0],["TBA0046",126,0,1,0,1,2,1,2,2,9,"2026-10-28","2026-10-28",0],["TBA0017",39,0,1,0,1,2,1,2,49,9,"2026-10-29","2026-10-29",2],["TBA1004",6,1,0,1,1,2,1,2,24,7,"2026-11-02","2026-11-02",2],["TBA4028",33,6,0,1,1,2,1,2,42,9,"2026-11-03","2026-11-03",3],["TBA7001",27,4,1,0,1,2,1,2,28,9,"2026-11-03","2026-11-03",0],["TBA0076",87,0,0,1,1,2,1,2,49,9,"2026-11-03","2026-11-03",3],["TBA4028",33,6,0,1,1,2,1,2,3,9,"2026-11-03","2026-11-03",0],["TBA7001",27,4,1,0,1,2,1,2,2,9,"2026-11-03","2026-11-03",0],["TBA1013",28,1,1,1,1,2,1,2,24,7,"2026-11-03","2026-11-03",2],["TBA7002",24,4,0,0,1,2,1,2,28,9,"2026-11-04","2026-11-04",0],["TBA7002",24,4,0,0,1,2,1,2,2,9,"2026-11-04","2026-11-04",1],["TBA5053",4,2,1,1,1,2,1,2,24,7,"2026-11-04","2026-11-04",2],["TBA4017",31,6,1,1,1,2,1,2,38,9,"2026-11-04","2026-11-04",0],["TBA7002",24,4,0,0,1,2,1,2,20,9,"2026-11-04","2026-11-04",2],["TBA4017",31,6,1,1,1,2,1,2,40,9,"2026-11-04","2026-11-04",3],["TBA3028",103,5,0,0,1,2,1,2,3,9,"2026-11-05","2026-11-05",1],["TBA4004",69,6,1,0,1,2,1,2,35,0,"2026-11-05","2026-11-05",1],["TBA5044",30,2,1,0,1,2,1,2,24,7,"2026-11-05","2026-11-05",1],["TBA3028",103,5,0,0,1,2,1,2,54,9,"2026-11-05","2026-11-05",0],["TBA3028",103,5,0,0,1,2,1,2,33,9,"2026-11-05","2026-11-05",2],["TBA3026",46,5,0,0,1,2,1,2,3,9,"2026-11-10","2026-11-10",0],["TBA3026",46,5,0,0,1,2,1,2,6,9,"2026-11-10","2026-11-10",0],["TBA3026",46,5,0,0,1,2,1,2,38,9,"2026-11-10","2026-11-10",2]]}</script>
+<script>
+(() => {
+  'use strict';
+  // ---------- Data ----------
+  const RAW = JSON.parse(document.getElementById('data').textContent);
+  const C = RAW.cols, D = RAW.dicts;
+  const ALL = RAW.rows.map((r) => {
+    const o = {};
+    C.forEach((c, i) => { o[c] = D[c] ? D[c][r[i]] : r[i]; });
+    o.ppd = o.ppd || '';
+    o.key = o.kod_sekolah + '|' + o.nama_pemeriksaan + '|' + o.tarikh_mula;
+    o.bulan = o.tarikh_mula.slice(0, 7);
+    o.guru = Number(o.guru_dicerap) || 0;
+    return o;
+  });
+
+  const BULAN = ['Jan', 'Feb', 'Mac', 'Apr', 'Mei', 'Jun', 'Jul', 'Ogo', 'Sep', 'Okt', 'Nov', 'Dis'];
+  const BULAN_P = ['Januari', 'Februari', 'Mac', 'April', 'Mei', 'Jun', 'Julai', 'Ogos', 'September', 'Oktober', 'November', 'Disember'];
+  const nf = new Intl.NumberFormat('ms-MY');
+  const fmt = (n) => nf.format(n);
+  const tarikh = (iso) => { const [y, m, d] = iso.split('-'); return (+d) + ' ' + BULAN_P[+m - 1] + ' ' + y; };
+  const tarikhPendek = (iso) => { const [y, m, d] = iso.split('-'); return (+d) + ' ' + BULAN[+m - 1] + ' ' + y; };
+  const bulanP = (ym) => BULAN_P[+ym.slice(5, 7) - 1] + ' ' + ym.slice(0, 4);
+  const titleCase = (s) => s.toLowerCase().replace(/(^|[\s(@./-])([a-z])/g, (m, a, b) => a + b.toUpperCase());
+  const uniq = (arr) => [...new Set(arr)];
+
+  // Full month range in the data
+  const monthsAll = (() => {
+    const m = ALL.map((r) => r.bulan).sort();
+    const out = []; let [y, mo] = m[0].split('-').map(Number); const [ey, em] = m[m.length - 1].split('-').map(Number);
+    while (y < ey || (y === ey && mo <= em)) { out.push(y + '-' + String(mo).padStart(2, '0')); mo++; if (mo > 12) { mo = 1; y++; } }
+    return out;
+  })();
+  const period = (() => { const t = ALL.map((r) => r.tarikh_mula).sort(); return [t[0], t[t.length - 1]]; })();
+
+  // ---------- State ----------
+  const F = {ppd: '', nazir: '', jenis: '', bulan: ''};
+  const LABEL = {ppd: 'PPD', nazir: 'Pegawai', jenis: 'Jenis', bulan: 'Bulan'};
+  const show = {ppd: (v) => 'PPD ' + v, nazir: (v) => titleCase(v), jenis: (v) => v, bulan: (v) => bulanP(v)};
+  function readHash() {
+    try {
+      const h = decodeURIComponent(location.hash.slice(1));
+      if (!h) return;
+      for (const part of h.split('&')) { const [k, v] = part.split('='); if (k in F && v) F[k] = v; }
+    } catch (e) { /* ignore */ }
+  }
+  function writeHash() {
+    const parts = Object.entries(F).filter(([, v]) => v).map(([k, v]) => k + '=' + v);
+    const h = parts.length ? '#' + encodeURIComponent(parts.join('&')) : '';
+    try { history.replaceState(null, '', location.pathname + location.search + h); } catch (e) { /* ignore */ }
+  }
+  const match = (r, skip) => (skip === 'ppd' || !F.ppd || r.ppd === F.ppd)
+    && (skip === 'nazir' || !F.nazir || r.nazir === F.nazir)
+    && (skip === 'jenis' || !F.jenis || r.jenis_pemeriksaan === F.jenis)
+    && (skip === 'bulan' || !F.bulan || r.bulan === F.bulan);
+  const filtered = (skip) => ALL.filter((r) => match(r, skip));
+
+  // count unique inspections by a dimension
+  function countBy(rows, fn) {
+    const m = new Map();
+    for (const r of rows) { const k = fn(r); if (!m.has(k)) m.set(k, new Set()); m.get(k).add(r.key); }
+    return [...m].map(([k, s]) => ({k, n: s.size}));
+  }
+
+  // ---------- Helpers ----------
+  const $ = (id) => document.getElementById(id);
+  const svgNS = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs, text) {
+    const e = tag.startsWith('svg:') ? document.createElementNS(svgNS, tag.slice(4)) : document.createElement(tag);
+    if (attrs) for (const [k, v] of Object.entries(attrs)) { if (v !== undefined && v !== null) e.setAttribute(k, v); }
+    if (text !== undefined) e.textContent = text;
+    return e;
+  }
+  function msg(box, text) { box.replaceChildren(el('div', {class: 'empty'}, text)); }
+  function makeTip(box) {
+    const tip = el('div', {class: 'tip'}); tip.hidden = true; box.appendChild(tip);
+    return {
+      show(ev, title, lines) {
+        tip.replaceChildren(el('strong', null, title), ...lines.map((l) => el('span', null, l)));
+        tip.hidden = false;
+        const b = box.getBoundingClientRect();
+        const px = ev.clientX - b.left, py = ev.clientY - b.top;
+        tip.style.left = Math.max(0, Math.min(box.clientWidth - tip.offsetWidth, px + 12)) + 'px';
+        tip.style.top = Math.max(0, py - tip.offsetHeight - 10) + 'px';
+      },
+      hide() { tip.hidden = true; }
+    };
+  }
+  let measurer;
+  function textW(str, cls) {
+    if (!measurer) { const s = el('svg:svg', {width: 0, height: 0, style: 'position:absolute;visibility:hidden'}); measurer = el('svg:text'); s.appendChild(measurer); document.body.appendChild(s); }
+    measurer.setAttribute('class', cls); measurer.textContent = str;
+    return measurer.getComputedTextLength() || str.length * 6.5;
+  }
+  function truncate(str, max, cls) {
+    if (textW(str, cls) <= max) return str;
+    let t = str;
+    while (t.length > 3 && textW(t + '…', cls) > max) t = t.slice(0, -1);
+    return t.trimEnd() + '…';
+  }
+
+  // Horizontal bar chart
+  function hbar(box, data, o) {
+    box.replaceChildren();
+    if (!data.length) { msg(box, 'Tiada rekod bagi pilihan ini.'); return; }
+    const W = Math.max(260, box.clientWidth || 400), rowH = 30, barH = 18;
+    const lw = Math.max(...data.map((d) => textW(o.label(d), 'lbl')));
+    const vw = Math.max(...data.map((d) => textW(fmt(d.n), 'val')));
+    const maxL = Math.min(lw, W * 0.42), left = maxL + 10;
+    const H = data.length * rowH;
+    const max = Math.max(...data.map((d) => d.n)) || 1;
+    const span = Math.max(40, W - left - vw - 10);
+    const svg = el('svg:svg', {viewBox: `0 0 ${W} ${H}`, height: H, role: 'img', 'aria-label': o.aria});
+    const tip = makeTip(box);
+    data.forEach((d, i) => {
+      const g = el('svg:g', {class: 'row', transform: `translate(0,${i * rowH})`});
+      const bw = Math.max(2, d.n / max * span);
+      const lab = el('svg:text', {class: 'lbl', x: left - 10, y: rowH / 2, dy: '0.35em', 'text-anchor': 'end'}, truncate(o.label(d), maxL, 'lbl'));
+      const bar = el('svg:rect', {class: 'bar', x: left, y: (rowH - barH) / 2, height: barH, width: bw, rx: 3});
+      bar.style.fill = o.active && o.active(d) === false ? 'var(--mute-bar)' : 'var(--accent)';
+      const val = el('svg:text', {class: 'val', x: left + bw + 6, y: rowH / 2, dy: '0.35em'}, fmt(d.n));
+      const hit = el('svg:rect', {class: o.onClick ? 'hit' : '', width: W, height: rowH, fill: 'transparent'});
+      hit.addEventListener('mousemove', (e) => tip.show(e, o.label(d), o.tip(d)));
+      hit.addEventListener('mouseleave', () => tip.hide());
+      hit.addEventListener('click', (e) => { tip.show(e, o.label(d), o.tip(d)); if (o.onClick) o.onClick(d); });
+      g.append(lab, bar, val, hit);
+      svg.appendChild(g);
+    });
+    box.prepend(svg);
+  }
+
+  // ---------- Filters UI ----------
+  function fillSelect(sel, allLabel, values, labelFn, current) {
+    sel.replaceChildren(new Option(allLabel, ''), ...values.map((v) => new Option(labelFn(v), v)));
+    sel.value = values.includes(current) ? current : '';
+  }
+  function renderFilters() {
+    // Each list shows values available under the other filters, plus the current pick
+    const ppds = uniq(filtered('ppd').map((r) => r.ppd).concat(F.ppd ? [F.ppd] : [])).filter(Boolean).sort();
+    fillSelect($('f-ppd'), 'Semua PPD', ppds, (v) => 'PPD ' + v, F.ppd);
+    const naz = uniq(filtered('nazir').map((r) => r.nazir).concat(F.nazir ? [F.nazir] : [])).sort((a, b) => a.localeCompare(b));
+    fillSelect($('f-nazir'), 'Semua pegawai (' + naz.length + ')', naz, titleCase, F.nazir);
+    const jen = uniq(filtered('jenis').map((r) => r.jenis_pemeriksaan).concat(F.jenis ? [F.jenis] : [])).sort();
+    fillSelect($('f-jenis'), 'Semua jenis', jen, (v) => v, F.jenis);
+    const bl = uniq(filtered('bulan').map((r) => r.bulan).concat(F.bulan ? [F.bulan] : [])).sort();
+    fillSelect($('f-bulan'), 'Semua bulan', bl, bulanP, F.bulan);
+    const chips = $('chips'); chips.replaceChildren();
+    for (const [k, v] of Object.entries(F)) {
+      if (!v) continue;
+      const b = el('button', {class: 'chip', type: 'button', 'aria-label': 'Buang penapis ' + LABEL[k]}, LABEL[k] + ': ' + show[k](v));
+      b.appendChild(el('span', {'aria-hidden': 'true'}, '×'));
+      b.addEventListener('click', () => set(k, ''));
+      chips.appendChild(b);
+    }
+  }
+  function set(k, v) { F[k] = v; writeHash(); render(); }
+  const toggle = (k, v) => set(k, F[k] === v ? '' : v);
+  $('f-ppd').addEventListener('change', (e) => set('ppd', e.target.value));
+  $('f-nazir').addEventListener('change', (e) => set('nazir', e.target.value));
+  $('f-jenis').addEventListener('change', (e) => set('jenis', e.target.value));
+  $('f-bulan').addEventListener('change', (e) => set('bulan', e.target.value));
+  $('reset').addEventListener('click', () => { for (const k in F) F[k] = ''; $('cari-nazir').value = ''; $('cari-sekolah').value = ''; writeHash(); render(); });
+  $('cari-nazir').addEventListener('input', () => renderNazir(filtered()));
+  $('cari-sekolah').addEventListener('input', () => renderSenarai(filtered()));
+
+  // ---------- Sections ----------
+  function renderKpi(rows) {
+    const keys = uniq(rows.map((r) => r.key));
+    $('k-pem').textContent = fmt(keys.length);
+    $('k-sek').textContent = fmt(uniq(rows.map((r) => r.kod_sekolah)).length);
+    $('k-tug').textContent = fmt(rows.length);
+    $('k-naz').textContent = fmt(uniq(rows.map((r) => r.nazir)).length);
+    $('k-gur').textContent = fmt(rows.reduce((s, r) => s + r.guru, 0));
+  }
+
+  function renderLede(rows) {
+    const lede = $('lede'); lede.replaceChildren();
+    const b = (t) => el('b', null, t);
+    if (!rows.length) { lede.textContent = 'Tiada pemeriksaan sepadan dengan penapis yang dipilih.'; return; }
+    const keys = uniq(rows.map((r) => r.key)).length;
+    const sek = uniq(rows.map((r) => r.kod_sekolah)).length;
+    const who = F.nazir ? titleCase(F.nazir) : (F.ppd ? 'PPD ' + F.ppd : 'Jemaah Nazir Negeri Terengganu');
+    const t = rows.map((r) => r.tarikh_mula).sort();
+    const months = countBy(rows, (r) => r.bulan).sort((a, b2) => b2.n - a.n);
+    const jen = countBy(rows, (r) => r.jenis_pemeriksaan).sort((a, b2) => b2.n - a.n);
+    lede.append(b(who), F.nazir ? ' terlibat dalam ' : ' merekodkan ', b(fmt(keys)), ' pemeriksaan di ', b(fmt(sek)), ' sekolah antara ',
+      b(tarikh(t[0])), ' dan ', b(tarikh(t[t.length - 1])), '. ');
+    if (!F.bulan) lede.append('Bulan paling sibuk ialah ', b(bulanP(months[0].k)), ' dengan ', b(fmt(months[0].n)), ' pemeriksaan');
+    if (!F.jenis) lede.append(F.bulan ? 'Jenis paling kerap ialah ' : ', dan jenis paling kerap ialah ', b(jen[0].k.toLowerCase()), '.');
+    else if (!F.bulan) lede.append('.');
+  }
+
+  function renderBulan() {
+    const box = $('c-bulan');
+    const rows = filtered('bulan');
+    const cnt = new Map(countBy(rows, (r) => r.bulan).map((d) => [d.k, d.n]));
+    const data = monthsAll.map((m) => ({k: m, n: cnt.get(m) || 0}));
+    box.replaceChildren();
+    const W = Math.max(280, box.clientWidth || 600), H = 220, m = {t: 18, r: 4, b: 26, l: 34};
+    const max = Math.max(...data.map((d) => d.n)) || 1;
+    const step = Math.pow(10, Math.floor(Math.log10(max)));
+    const tickStep = [1, 2, 5, 10].map((s) => s * step).find((s) => max / s <= 4) || step * 10;
+    const top = Math.ceil(max / tickStep) * tickStep;
+    const y = (v) => H - m.b - v / top * (H - m.t - m.b);
+    const band = (W - m.l - m.r) / data.length, bw = band * 0.68;
+    const svg = el('svg:svg', {viewBox: `0 0 ${W} ${H}`, height: H, role: 'img', 'aria-label': 'Carta bar bilangan pemeriksaan setiap bulan'});
+    for (let v = 0; v <= top; v += tickStep) {
+      svg.append(el('svg:line', {class: 'gridline', x1: m.l, x2: W - m.r, y1: y(v), y2: y(v)}),
+        el('svg:text', {class: 'axis', x: m.l - 6, y: y(v), dy: '0.32em', 'text-anchor': 'end'}, fmt(v)));
+    }
+    const tip = makeTip(box);
+    const narrow = bw < 22;
+    data.forEach((d, i) => {
+      const x = m.l + i * band + (band - bw) / 2;
+      const on = !F.bulan || F.bulan === d.k;
+      const r = el('svg:rect', {class: 'bar', x, width: bw, rx: 3, y: y(d.n), height: Math.max(0, y(0) - y(d.n))});
+      r.style.fill = on ? 'var(--accent)' : 'var(--mute-bar)';
+      svg.appendChild(r);
+      if (!(narrow && d.n === 0)) svg.appendChild(el('svg:text', {class: 'val', x: x + bw / 2, y: y(d.n) - 5, 'text-anchor': 'middle'}, fmt(d.n)));
+      if (!(narrow && i % 2)) svg.appendChild(el('svg:text', {class: 'axis', x: x + bw / 2, y: H - 8, 'text-anchor': 'middle'}, BULAN[+d.k.slice(5, 7) - 1]));
+      const hit = el('svg:rect', {class: 'hit', x: m.l + i * band, width: band, y: m.t, height: H - m.t - m.b, fill: 'transparent'});
+      hit.addEventListener('mousemove', (e) => tip.show(e, bulanP(d.k), [fmt(d.n) + ' pemeriksaan']));
+      hit.addEventListener('mouseleave', () => tip.hide());
+      hit.addEventListener('click', () => { if (d.n || F.bulan === d.k) toggle('bulan', d.k); });
+      svg.appendChild(hit);
+    });
+    box.prepend(svg);
+  }
+
+  function renderPpd() {
+    const rows = filtered('ppd');
+    const data = countBy(rows, (r) => r.ppd).sort((a, b) => b.n - a.n);
+    const sek = new Map(), tug = new Map();
+    for (const r of rows) { if (!sek.has(r.ppd)) sek.set(r.ppd, new Set()); sek.get(r.ppd).add(r.kod_sekolah); tug.set(r.ppd, (tug.get(r.ppd) || 0) + 1); }
+    hbar($('c-ppd'), data, {
+      label: (d) => d.k, aria: 'Carta bar pemeriksaan bagi setiap PPD',
+      active: (d) => !F.ppd || F.ppd === d.k,
+      tip: (d) => [fmt(d.n) + ' pemeriksaan', fmt(sek.get(d.k).size) + ' sekolah', fmt(tug.get(d.k)) + ' penugasan nazir'],
+      onClick: (d) => toggle('ppd', d.k)
+    });
+  }
+  function renderJenis() {
+    const rows = filtered('jenis');
+    const data = countBy(rows, (r) => r.jenis_pemeriksaan).sort((a, b) => b.n - a.n);
+    const tot = data.reduce((s, d) => s + d.n, 0);
+    hbar($('c-jenis'), data, {
+      label: (d) => d.k, aria: 'Carta bar pemeriksaan mengikut jenis pemeriksaan',
+      active: (d) => !F.jenis || F.jenis === d.k,
+      tip: (d) => [fmt(d.n) + ' pemeriksaan', Math.round(d.n / tot * 100) + '% daripada jumlah'],
+      onClick: (d) => toggle('jenis', d.k)
+    });
+  }
+  function renderJsek(rows) {
+    const data = countBy(rows, (r) => r.jenis_sekolah).sort((a, b) => b.n - a.n);
+    const tot = data.reduce((s, d) => s + d.n, 0);
+    hbar($('c-jsek'), data, {label: (d) => d.k, aria: 'Carta bar pemeriksaan mengikut jenis sekolah', tip: (d) => [fmt(d.n) + ' pemeriksaan', Math.round(d.n / tot * 100) + '% daripada jumlah']});
+  }
+  function renderLokasi(rows) {
+    const box = $('c-lokasi'); box.replaceChildren();
+    const order = ['Bandar', 'Luar Bandar'];
+    const data = countBy(rows, (r) => r.lokasi).sort((a, b) => order.indexOf(a.k) - order.indexOf(b.k));
+    if (!data.length) { msg(box, 'Tiada rekod bagi pilihan ini.'); return; }
+    const tot = data.reduce((s, d) => s + d.n, 0);
+    const cols = ['var(--accent)', 'var(--accent-2)'];
+    const track = el('div', {class: 'split-track', role: 'img'});
+    const legend = el('div', {class: 'split-legend'});
+    const tip = makeTip(box);
+    const parts = [];
+    data.forEach((d, i) => {
+      const pc = Math.round(d.n / tot * 1000) / 10;
+      parts.push(d.k + ' ' + pc + ' peratus');
+      const seg = el('div'); seg.style.width = pc + '%'; seg.style.background = cols[i % 2];
+      seg.addEventListener('mousemove', (e) => tip.show(e, d.k, [fmt(d.n) + ' pemeriksaan', pc + '%']));
+      seg.addEventListener('mouseleave', () => tip.hide());
+      track.appendChild(seg);
+      const it = el('span'); const sw = el('i'); sw.style.background = cols[i % 2];
+      it.append(sw, d.k + ' · ', el('b', null, fmt(d.n)), ' (' + pc + '%)');
+      legend.appendChild(it);
+    });
+    track.setAttribute('aria-label', parts.join(', '));
+    box.prepend(track, legend);
+  }
+
+  function renderNazir(rowsAll) {
+    // Ignore nazir filter so all officers remain visible and the chosen one is highlighted
+    const rows = filtered('nazir');
+    const g = new Map();
+    for (const r of rows) {
+      if (!g.has(r.nazir)) g.set(r.nazir, {nazir: r.nazir, pejabat: r.pejabat, tug: 0, sek: new Set(), prog: new Set(), guru: 0, last: ''});
+      const o = g.get(r.nazir); o.tug++; o.sek.add(r.kod_sekolah); o.prog.add(r.nama_pemeriksaan); o.guru += r.guru; if (r.tarikh_mula > o.last) o.last = r.tarikh_mula;
+    }
+    const q = $('cari-nazir').value.trim().toLowerCase();
+    const list = [...g.values()].filter((o) => !q || o.nazir.toLowerCase().includes(q)).sort((a, b) => b.tug - a.tug || b.guru - a.guru || a.nazir.localeCompare(b.nazir));
+    const tb = $('t-nazir'); tb.replaceChildren();
+    if (!list.length) { const tr = tb.insertRow(); const td = tr.insertCell(); td.colSpan = 7; td.className = 'sub'; td.textContent = 'Tiada pegawai sepadan.'; return; }
+    for (const o of list) {
+      const tr = tb.insertRow(); tr.className = 'click' + (F.nazir === o.nazir ? ' on' : ''); tr.tabIndex = 0;
+      tr.setAttribute('aria-label', 'Tapis ikut ' + titleCase(o.nazir));
+      const cells = [[titleCase(o.nazir)], [titleCase(o.pejabat), 'sub'], [fmt(o.tug), 'n'], [fmt(o.sek.size), 'n'], [fmt(o.prog.size), 'n'], [fmt(o.guru), 'n'], [tarikhPendek(o.last), 'date sub']];
+      for (const [t, c] of cells) { const td = tr.insertCell(); td.textContent = t; if (c) td.className = c; }
+      const go = () => toggle('nazir', o.nazir);
+      tr.addEventListener('click', go);
+      tr.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+    }
+  }
+
+  function renderProgram(rows) {
+    const g = new Map();
+    for (const r of rows) {
+      if (!g.has(r.nama_pemeriksaan)) g.set(r.nama_pemeriksaan, {p: r.nama_pemeriksaan, j: r.jenis_pemeriksaan, k: new Set(), s: new Set(), guru: 0});
+      const o = g.get(r.nama_pemeriksaan); o.k.add(r.key); o.s.add(r.kod_sekolah); o.guru += r.guru;
+    }
+    const list = [...g.values()].sort((a, b) => b.k.size - a.k.size);
+    const tb = $('t-program'); tb.replaceChildren();
+    if (!list.length) { const tr = tb.insertRow(); const td = tr.insertCell(); td.colSpan = 5; td.className = 'sub'; td.textContent = 'Tiada rekod bagi pilihan ini.'; return; }
+    for (const o of list) {
+      const tr = tb.insertRow();
+      for (const [t, c] of [[o.p], [o.j, 'sub'], [fmt(o.k.size), 'n'], [fmt(o.s.size), 'n'], [fmt(o.guru), 'n']]) { const td = tr.insertCell(); td.textContent = t; if (c) td.className = c; }
+    }
+  }
+
+  function renderSenarai(rows) {
+    // One line per inspection, listing every officer on it (from the unfiltered set)
+    const keys = new Set(rows.map((r) => r.key));
+    const g = new Map();
+    for (const r of ALL) {
+      if (!keys.has(r.key)) continue;
+      if (!g.has(r.key)) g.set(r.key, {r, naz: new Set(), guru: 0});
+      const o = g.get(r.key); o.naz.add(r.nazir); o.guru += r.guru;
+    }
+    const q = $('cari-sekolah').value.trim().toLowerCase();
+    const list = [...g.values()].filter((o) => !q || o.r.nama_sekolah.toLowerCase().includes(q) || o.r.kod_sekolah.toLowerCase().includes(q))
+      .sort((a, b) => b.r.tarikh_mula.localeCompare(a.r.tarikh_mula) || a.r.nama_sekolah.localeCompare(b.r.nama_sekolah));
+    $('senarai-count').textContent = fmt(list.length) + ' pemeriksaan, terkini di atas.';
+    const tb = $('t-senarai'); tb.replaceChildren();
+    if (!list.length) { const tr = tb.insertRow(); const td = tr.insertCell(); td.colSpan = 6; td.className = 'sub'; td.textContent = 'Tiada pemeriksaan sepadan.'; return; }
+    for (const o of list) {
+      const r = o.r, tr = tb.insertRow();
+      const dt = r.tarikh_mula === r.tarikh_tamat ? tarikhPendek(r.tarikh_mula) : tarikhPendek(r.tarikh_mula) + ' – ' + tarikhPendek(r.tarikh_tamat);
+      const sek = tr.insertCell(); sek.append(el('div', null, titleCase(r.nama_sekolah)), el('div', {class: 'count'}, r.kod_sekolah + ' · ' + r.jenis_sekolah));
+      const cells = [[dt, 'date']];
+      const td0 = tr.insertCell(0); td0.textContent = cells[0][0]; td0.className = 'date';
+      const tdP = tr.insertCell(); tdP.textContent = r.ppd; tdP.className = 'sub';
+      const tdG = tr.insertCell(); tdG.textContent = r.nama_pemeriksaan;
+      const tdN = tr.insertCell(); tdN.className = 'sub'; tdN.textContent = [...o.naz].map(titleCase).join(', ');
+      const tdC = tr.insertCell(); tdC.className = 'n'; tdC.textContent = fmt(o.guru);
+    }
+  }
+
+  function render() {
+    const rows = filtered();
+    renderFilters();
+    renderLede(rows);
+    renderKpi(rows);
+    renderBulan();
+    renderPpd();
+    renderJenis();
+    renderJsek(rows);
+    renderLokasi(rows);
+    renderNazir(rows);
+    renderProgram(rows);
+    renderSenarai(rows);
+  }
+
+  readHash();
+  render();
+  let rt;
+  const ro = new ResizeObserver(() => { clearTimeout(rt); rt = setTimeout(() => { const rows = filtered(); renderBulan(); renderPpd(); renderJenis(); renderJsek(rows); }, 120); });
+  ro.observe(document.querySelector('main'));
+  window.addEventListener('hashchange', () => { for (const k in F) F[k] = ''; readHash(); render(); });
+})();
+</script>
+</body>
+</html>
